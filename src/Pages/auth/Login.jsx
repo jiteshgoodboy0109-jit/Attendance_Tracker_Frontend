@@ -8,6 +8,8 @@ import { FaApple, FaMeta } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
 import { HiOutlineEye, HiOutlineEyeOff, HiSun, HiMoon } from 'react-icons/hi'
 import loginIllustration from '../../assets/login-illustration.png'
+import darkLogo from '../../assets/Darklogo.WEBP'
+import whiteLogo from '../../assets/Whitelogo.WEBP'
 import ForgotPassword from './ForgotPassword'
 
 function Login() {
@@ -46,7 +48,7 @@ function Login() {
   return (
     <div className={isDark ? 'dark' : ''}>
       <div className="min-h-screen w-full flex flex-col items-center justify-center
-                      px-4 py-8 transition-colors duration-300
+                      px-6 py-10 transition-colors duration-300
                       bg-[#FFFFFF] dark:bg-[#0D1117]">
 
         {/* ── Theme Toggle (top-right) ─────────────────────────────────────── */}
@@ -71,18 +73,18 @@ function Login() {
         </div>
 
         {/* ── Main Card ────────────────────────────────────────────────────── */}
-        <div className="flex w-full max-w-3xl rounded-2xl overflow-hidden
+        <div className="flex w-full max-w-5xl rounded-2xl overflow-hidden
                         transition-all duration-500 hover:-translate-y-1
                         shadow-2xl shadow-black/10 dark:shadow-black/50
-                        hover:shadow-[0_25px_50px_-12px_rgba(9,105,218,0.15)] dark:hover:shadow-[0_25px_50px_-12px_rgba(31,111,235,0.15)]
+                        hover:shadow-[0_25px_50px_-12px_rgba(191,64,191,0.15)] dark:hover:shadow-[0_25px_50px_-12px_rgba(191,64,191,0.25)]
                         border border-[#D0D7DE] dark:border-[#30363D]
-                        hover:border-[#0969DA]/20 dark:hover:border-[#1F6FEB]/30">
+                        hover:border-[#bf40bf]/30 dark:hover:border-[#bf40bf]/40">
 
           {/* ════════════════════════════════════════════════════════════════
               LEFT PANEL — Login Form
           ════════════════════════════════════════════════════════════════ */}
-<div className="flex-1 px-10 py-12 flex flex-col justify-center
-                min-h-[450px] transition-colors duration-300
+          <div className="w-full md:w-1/2 px-10 py-12 flex flex-col justify-center
+                min-h-[500px] transition-colors duration-300
                 bg-[#FFFFFF] dark:bg-[#161B22]">
 
             {!showForgot ? (
@@ -91,9 +93,9 @@ function Login() {
                 {/* Heading */}
                 <h1 className="text-2xl font-bold text-center mb-1
                  text-[#24292F] dark:text-[#F0F6FC]">
-                  Back on Track 😎
+                  Welcome Back !!
                 </h1>
-
+<br></br>
                 <p className="text-sm text-center mb-8
                 text-[#57606A] dark:text-[#8B949E]">
                   Login to your ATR panel
@@ -113,7 +115,7 @@ function Login() {
                   <div className="flex flex-col gap-1.5">
 
                     <label className="text-sm font-medium text-[#24292F] dark:text-[#C9D1D9]">
-                      Email
+                      Email/User Name
                     </label>
 
                     <input
@@ -124,7 +126,10 @@ function Login() {
                       className="w-full px-3 py-2.5 text-sm rounded-lg border outline-none
                    bg-[#FFFFFF] dark:bg-[#0D1117]
                    border-[#D0D7DE] dark:border-[#30363D]
-                   text-[#24292F] dark:text-[#C9D1D9]"
+                   text-[#24292F] dark:text-[#C9D1D9]
+                   transition-all duration-300
+                   hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                   focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
                     />
 
                   </div>
@@ -159,13 +164,16 @@ function Login() {
                         className="w-full px-3 py-2.5 pr-11 text-sm rounded-lg border outline-none
                      bg-[#FFFFFF] dark:bg-[#0D1117]
                      border-[#D0D7DE] dark:border-[#30363D]
-                     text-[#24292F] dark:text-[#C9D1D9]"
+                     text-[#24292F] dark:text-[#C9D1D9]
+                     transition-all duration-300
+                     hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                     focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
                       />
 
                       <button
                         type="button"
                         onClick={() => setShowPass(!showPass)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                       >
                         {showPass
                           ? <HiOutlineEyeOff className="w-5 h-5" />
@@ -198,6 +206,18 @@ function Login() {
                     Sign up
                   </a>
                 </p>
+
+                {/* Powered By */}
+                <div className="flex flex-col items-start mt-8">
+                  <p className="text-[10px] uppercase tracking-wider font-semibold text-[#57606A] dark:text-[#8B949E] transition-colors duration-300">
+                    Powered By
+                  </p>
+                  {isDark ? (
+                    <img src={darkLogo} alt="Powered by GEN>IT" className="h-14 object-contain opacity-90 hover:opacity-100 transition-opacity mix-blend-screen mt-[-6px]" />
+                  ) : (
+                    <img src={whiteLogo} alt="Powered by GEN>IT" className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity mix-blend-multiply mt-[-4px]" />
+                  )}
+                </div>
               </>
 
             ) : (
@@ -213,7 +233,7 @@ function Login() {
           {/* ════════════════════════════════════════════════════════════════
               RIGHT PANEL — Illustration
           ════════════════════════════════════════════════════════════════ */}
-          <div className="hidden md:block flex-1 transition-colors duration-300 overflow-hidden
+          <div className="hidden md:block md:w-1/2 transition-colors duration-300 overflow-hidden
                           bg-[#F6F8FA] dark:bg-[#21262D]">
             <img
               src={loginIllustration}
@@ -223,27 +243,6 @@ function Login() {
           </div>
 
         </div>
-
-        {/* ── Footer ───────────────────────────────────────────────────────── */}
-        <p className="mt-5 text-xs text-center max-w-md transition-colors duration-300
-                      text-[#6E7781] dark:text-[#6E7681]">
-          By clicking continue, you agree to our{' '}
-          <a href="/terms"
-            className="font-medium transition-all duration-200
-                        text-[#57606A] dark:text-[#8B949E]
-                        hover:text-[#0969DA] dark:hover:text-[#58A6FF]
-                        hover:underline decoration-[#0969DA]/40 dark:decoration-[#58A6FF]/40 underline-offset-4">
-            Terms of Service
-          </a>{' '}
-          and{' '}
-          <a href="/privacy"
-            className="font-medium transition-all duration-200
-                        text-[#57606A] dark:text-[#8B949E]
-                        hover:text-[#0969DA] dark:hover:text-[#58A6FF]
-                        hover:underline decoration-[#0969DA]/40 dark:decoration-[#58A6FF]/40 underline-offset-4">
-            Privacy Policy
-          </a>.
-        </p>
 
       </div>
     </div>
