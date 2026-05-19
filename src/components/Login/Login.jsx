@@ -48,11 +48,11 @@ function Login() {
                       bg-[#FFFFFF] dark:bg-[#0D1117]">
 
         {/* ── Theme Toggle (top-right) ─────────────────────────────────────── */}
-        <div className="w-full max-w-3xl flex justify-end mb-3">
+        <div className="fixed top-4 right-4 z-50">
           <button
             onClick={() => setIsDark(!isDark)}
             aria-label="Toggle theme"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm font-medium
+            className="flex items-center justify-center w-13 h-13 rounded-2xl border text-sm font-medium
                        transition-all duration-300 hover:scale-105 hover:shadow-md
                        bg-[#FFFFFF] dark:bg-[#21262D]
                        border-[#D0D7DE] dark:border-[#30363D]
@@ -62,8 +62,9 @@ function Login() {
                        hover:border-[#0969DA]/30 dark:hover:border-[#58A6FF]/30"
           >
             {isDark
-              ? <><HiSun  className="w-4 h-4" /> Light</>
-              : <><HiMoon className="w-4 h-4" /> Dark</>}
+              ? <HiSun  className="w-6 h-6" /> 
+              : <HiMoon className="w-6 h-6" /> 
+            }
           </button>
         </div>
 
