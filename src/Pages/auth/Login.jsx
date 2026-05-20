@@ -36,8 +36,8 @@ function Login() {
     try {
       setLoading(true)
 
-     const response = await api.post(
-  'auth/login/',
+      const response = await api.post(
+        'auth/login/',
         {
           login: email,
           password: password,
@@ -128,7 +128,7 @@ function Login() {
 
         {/* ── Main Card ────────────────────────────────────────────────────── */}
         <div className="flex w-full max-w-5xl rounded-2xl overflow-hidden
-                        transition-all duration-500 hover:-translate-y-1
+                        transition-all duration-500
                         shadow-2xl shadow-black/10 dark:shadow-black/50
                         hover:shadow-[0_25px_50px_-12px_rgba(191,64,191,0.15)] dark:hover:shadow-[0_25px_50px_-12px_rgba(191,64,191,0.25)]
                         border border-[#D0D7DE] dark:border-[#30363D]
