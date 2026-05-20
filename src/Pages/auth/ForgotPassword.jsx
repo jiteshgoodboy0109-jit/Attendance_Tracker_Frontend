@@ -16,15 +16,21 @@ function ForgotPassword({ onBack }) {
   const [showConfirmPass, setShowConfirmPass] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const handleSendOtp = async () => {
+
     setError('')
+
     if (!email) {
       setError('Please enter your email')
       return
     }
+
     try {
+
       setLoading(true)
+
       const response = await api.post(
         'auth/otp/send/',
         {
@@ -34,15 +40,74 @@ function ForgotPassword({ onBack }) {
       )
 
       const data = response.data
-      if (data.success) {
-        alert(data.message || 'OTP sent successfully')
-        setStep(2)
+
+      console.log(data)
+
+      alert(data.message || 'OTP sent successfully')
+
+      // Navigate to OTP section
+      setStep(2)
+
+    } catch (err) {
+
+      console.error(err)
+
+      if (err.response?.data?.message) {
+
+        setError(err.response.data.message)
+
       } else {
-        setError(data.message || 'Failed to send OTP')
+
+        setError('Server error. Please try again.')
+
       }
+
+    } finally {
+
+      setLoading(false)
+
+    }
+  }
+  const handleVerifyOtp = async () => {
+
+    setError('')
+    if (!otp) {
+      setError('Please enter OTP')
+      return
+    }
+    try {
+      setLoading(true)
+      const response = await api.post(
+        'auth/otp/verify/',
+        {
+          otp: Number(otp),
+          email: email,
+          purpose: 'PASSWORD_RESET'
+        }
+      )
+
+      const data = response.data
+     if (response.status === 200) {
+        localStorage.setItem(
+          'reset_token',
+          data.reset_token
+        )
+        localStorage.setItem(
+          'token_identifier',
+          data.token_identifier
+        )
+        setSuccess(data.message || 'OTP Verified Successfully')
+        setTimeout(() => {
+          setStep(3)
+        }, 1000)
+      } else {
+        setError(data.message || 'OTP verification failed')
+      }
+
     } catch (err) {
       console.error(err)
       if (err.response?.data?.message) {
+
         setError(err.response.data.message)
       } else {
         setError('Server error. Please try again.')
@@ -52,23 +117,6 @@ function ForgotPassword({ onBack }) {
     }
   }
 
-  const handleVerifyOtp = () => {
-
-    setError('')
-
-    if (!otp) {
-      setError('Please enter OTP')
-      return
-    }
-    setLoading(true)
-    setTimeout(() => {
-
-      setLoading(false)
-      setStep(3)
-      alert('OTP Verified')
-
-    }, 1500)
-  }
   const handleResetPassword = () => {
 
     setError('')
@@ -125,11 +173,17 @@ function ForgotPassword({ onBack }) {
       {/* ───────────────────────────────────── */}
       {error && (
         <p className="text-xs text-center mb-4
-                      text-[#CF222E] dark:text-[#F85149]">
+                text-[#CF222E] dark:text-[#F85149]">
           ⚠️ {error}
         </p>
       )}
 
+      {success && (
+        <p className="text-xs text-center mb-4
+                text-[#238636] dark:text-[#3FB950]">
+          ✅ {success}
+        </p>
+      )}
       {step === 1 && (
 
         <div className="flex flex-col gap-4">
