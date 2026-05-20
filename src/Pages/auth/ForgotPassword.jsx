@@ -3,57 +3,55 @@ import {
   HiOutlineEye,
   HiOutlineEyeOff
 } from 'react-icons/hi'
+import api from '../../services/api'
 
 function ForgotPassword({ onBack }) {
 
-  // ── Steps ─────────────────────────────────────
-  // 1 = Email
-  // 2 = OTP Verify
-  // 3 = Reset Password
   const [step, setStep] = useState(1)
-
-  // ── Form States ───────────────────────────────
   const [email, setEmail] = useState('')
   const [otp, setOtp] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
-  // ── Password Visibility ───────────────────────
   const [showPass, setShowPass] = useState(false)
   const [showConfirmPass, setShowConfirmPass] = useState(false)
-
-  // ── UI States ─────────────────────────────────
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // ──────────────────────────────────────────────
-  // SEND OTP
-  // ──────────────────────────────────────────────
-  const handleSendOtp = () => {
-
+  const handleSendOtp = async () => {
     setError('')
-
     if (!email) {
       setError('Please enter your email')
       return
     }
+    try {
+      setLoading(true)
+      const response = await api.post(
+        'auth/otp/send/',
+        {
+          email: email,
+          purpose: 'PASSWORD_RESET'
+        }
+      )
 
-    setLoading(true)
-
-    // Fake API Call
-    setTimeout(() => {
-
+      const data = response.data
+      if (data.success) {
+        alert(data.message || 'OTP sent successfully')
+        setStep(2)
+      } else {
+        setError(data.message || 'Failed to send OTP')
+      }
+    } catch (err) {
+      console.error(err)
+      if (err.response?.data?.message) {
+        setError(err.response.data.message)
+      } else {
+        setError('Server error. Please try again.')
+      }
+    } finally {
       setLoading(false)
-      setStep(2)
-
-      alert('OTP sent successfully')
-
-    }, 1500)
+    }
   }
 
-  // ──────────────────────────────────────────────
-  // VERIFY OTP
-  // ──────────────────────────────────────────────
   const handleVerifyOtp = () => {
 
     setError('')
@@ -62,23 +60,15 @@ function ForgotPassword({ onBack }) {
       setError('Please enter OTP')
       return
     }
-
     setLoading(true)
-
-    // Fake Verification
     setTimeout(() => {
 
       setLoading(false)
       setStep(3)
-
       alert('OTP Verified')
 
     }, 1500)
   }
-
-  // ──────────────────────────────────────────────
-  // RESET PASSWORD
-  // ──────────────────────────────────────────────
   const handleResetPassword = () => {
 
     setError('')
@@ -94,8 +84,6 @@ function ForgotPassword({ onBack }) {
     }
 
     setLoading(true)
-
-    // Fake Reset
     setTimeout(() => {
 
       setLoading(false)
@@ -110,10 +98,6 @@ function ForgotPassword({ onBack }) {
 
   return (
     <>
-
-      {/* ───────────────────────────────────── */}
-      {/* Back Button */}
-      {/* ───────────────────────────────────── */}
       <button
         onClick={onBack}
         className="mb-5 text-sm
@@ -146,9 +130,6 @@ function ForgotPassword({ onBack }) {
         </p>
       )}
 
-      {/* ═════════════════════════════════════ */}
-      {/* STEP 1 — EMAIL */}
-      {/* ═════════════════════════════════════ */}
       {step === 1 && (
 
         <div className="flex flex-col gap-4">
@@ -185,9 +166,6 @@ function ForgotPassword({ onBack }) {
         </div>
       )}
 
-      {/* ═════════════════════════════════════ */}
-      {/* STEP 2 — VERIFY OTP */}
-      {/* ═════════════════════════════════════ */}
       {step === 2 && (
 
         <div className="flex flex-col gap-4">
@@ -224,9 +202,7 @@ function ForgotPassword({ onBack }) {
         </div>
       )}
 
-      {/* ═════════════════════════════════════ */}
-      {/* STEP 3 — RESET PASSWORD */}
-      {/* ═════════════════════════════════════ */}
+
       {step === 3 && (
 
         <div className="flex flex-col gap-4">
