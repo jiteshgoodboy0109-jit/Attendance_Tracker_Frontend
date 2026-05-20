@@ -2,7 +2,6 @@
 // Login.jsx — Attendify Attendance Tracker
 // Features: Dark / Light theme toggle, GitHub color system, social login
 // ─────────────────────────────────────────────────────────────────────────────
-
 import { useState } from 'react'
 import { FaApple, FaMeta } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
@@ -11,6 +10,7 @@ import loginIllustration from '../../assets/login-illustration.png'
 import darkLogo from '../../assets/Darklogo.WEBP'
 import whiteLogo from '../../assets/Whitelogo.WEBP'
 import ForgotPassword from './ForgotPassword'
+import api from '../../services/api'
 
 function Login() {
   // ── State ──────────────────────────────────────────────────────────────────
@@ -23,7 +23,8 @@ function Login() {
   const [showForgot, setShowForgot] = useState(false)
 
   // ── Form Submit ─────────────────────────────────────────────────────────────
-  const handleSubmit = (e) => {
+  // ── Form Submit ─────────────────────────────────────────────────────────────
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
 
@@ -32,12 +33,65 @@ function Login() {
       return
     }
 
-    setLoading(true)
-    // TODO: replace with real API call
-    setTimeout(() => {
+    try {
+      setLoading(true)
+
+     const response = await api.post(
+  'auth/login/',
+        {
+          login: email,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      // Success response
+      if (response.data.success) {
+
+        // Store tokens in localStorage
+        localStorage.setItem(
+          'access_token',
+          response.data.access_token
+        )
+
+        localStorage.setItem(
+          'refresh_token',
+          response.data.refresh_token
+        )
+
+        // Store user data
+        localStorage.setItem(
+          'user',
+          JSON.stringify(response.data.user)
+        )
+
+        alert(response.data.message)
+
+        console.log('User:', response.data.user)
+
+        // Redirect example
+        // window.location.href = '/dashboard'
+      }
+
+    } catch (err) {
+
+      console.error(err)
+
+      if (err.response?.data?.message) {
+        setError(err.response.data.message)
+      } else if (err.response?.status === 401) {
+        setError('Invalid username or password.')
+      } else {
+        setError('Login failed. Please try again.')
+      }
+
+    } finally {
       setLoading(false)
-      alert(`Logged in as: ${email}`)
-    }, 1500)
+    }
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -95,7 +149,7 @@ function Login() {
                  text-[#24292F] dark:text-[#F0F6FC]">
                   Welcome Back !!
                 </h1>
-<br></br>
+                <br></br>
                 <p className="text-sm text-center mb-8
                 text-[#57606A] dark:text-[#8B949E]">
                   Login to your ATR panel
@@ -119,8 +173,8 @@ function Login() {
                     </label>
 
                     <input
-                      type="email"
-                      placeholder="m@example.com"
+                      type="text"
+                      placeholder="Username or Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-3 py-2.5 text-sm rounded-lg border outline-none
