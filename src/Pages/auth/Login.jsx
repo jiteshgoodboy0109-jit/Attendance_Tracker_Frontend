@@ -129,10 +129,10 @@ function Login() {
         {/* ── Main Card ────────────────────────────────────────────────────── */}
         <div className="flex w-full max-w-5xl rounded-2xl overflow-hidden
                         transition-all duration-500
-                        shadow-2xl shadow-black/10 dark:shadow-black/50
-                        hover:shadow-[0_25px_50px_-12px_rgba(191,64,191,0.15)] dark:hover:shadow-[0_25px_50px_-12px_rgba(191,64,191,0.25)]
+                        shadow-premium-light dark:shadow-premium-dark
+                        hover:shadow-premium-hover-light dark:hover:shadow-premium-hover-dark
                         border border-[#D0D7DE] dark:border-[#30363D]
-                        hover:border-[#bf40bf]/30 dark:hover:border-[#bf40bf]/40">
+                        hover:border-[#bf40bf]/40 dark:hover:border-[#bf40bf]/60">
 
           {/* ════════════════════════════════════════════════════════════════
               LEFT PANEL — Login Form
