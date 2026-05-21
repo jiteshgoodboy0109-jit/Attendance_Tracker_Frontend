@@ -148,194 +148,199 @@ function ForgotPassword({ onBack }) {
     <>
       <button
         onClick={onBack}
-        className="mb-5 text-sm
-                   text-[#0969DA] dark:text-[#58A6FF]
-                   hover:underline"
+        className="group mb-6 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider
+                   text-[#57606A] dark:text-[#8B949E]
+                   hover:text-[#bf40bf] dark:hover:text-[#58A6FF] transition-colors"
       >
-        ← Back to Login
+        <span className="transition-transform group-hover:-translate-x-1">←</span> Back to Login
       </button>
 
-      {/* ───────────────────────────────────── */}
       {/* Heading */}
-      {/* ───────────────────────────────────── */}
-      <h1 className="text-2xl font-bold text-center mb-2
-                     text-[#24292F] dark:text-[#F0F6FC]">
-        Forgot Password
-      </h1>
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-extrabold tracking-tight text-[#24292F] dark:text-[#F0F6FC]">
+          Forgot Password
+        </h1>
+        <p className="text-sm mt-2 text-[#57606A] dark:text-[#8B949E]">
+          Reset your password securely
+        </p>
+      </div>
 
-      <p className="text-sm text-center mb-8
-                    text-[#57606A] dark:text-[#8B949E]">
-        Reset your password securely
-      </p>
-
-      {/* ───────────────────────────────────── */}
       {/* Error */}
-      {/* ───────────────────────────────────── */}
       {error && (
-        <p className="text-xs text-center mb-4
-                text-[#CF222E] dark:text-[#F85149]">
-          ⚠️ {error}
-        </p>
+        <div className="flex items-center gap-2 justify-center px-4 py-2.5 mb-6 rounded-lg text-xs font-semibold
+                        bg-[#CF222E]/10 dark:bg-[#F85149]/10 
+                        text-[#CF222E] dark:text-[#F85149]
+                        border border-[#CF222E]/20 dark:border-[#F85149]/20">
+          <span>⚠️</span>
+          <span>{error}</span>
+        </div>
       )}
 
+      {/* Success */}
       {success && (
-        <p className="text-xs text-center mb-4
-                text-[#238636] dark:text-[#3FB950]">
-          ✅ {success}
-        </p>
+        <div className="flex items-center gap-2 justify-center px-4 py-2.5 mb-6 rounded-lg text-xs font-semibold
+                        bg-[#238636]/10 dark:bg-[#3FB950]/10 
+                        text-[#238636] dark:text-[#3FB950]
+                        border border-[#238636]/20 dark:border-[#3FB950]/20">
+          <span>✅</span>
+          <span>{success}</span>
+        </div>
       )}
+
+      {/* Step 1: Send OTP */}
       {step === 1 && (
-
-        <div className="flex flex-col gap-4">
-
+        <div className="flex flex-col gap-5">
           {/* Email Input */}
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg border outline-none
-                       transition-all duration-300
-                       bg-[#FFFFFF] dark:bg-[#0D1117]
-                       border-[#D0D7DE] dark:border-[#30363D]
-                       text-[#24292F] dark:text-[#C9D1D9]
-                       placeholder:text-[#A0A7AE] dark:placeholder:text-[#484F58]
-                       focus:border-[#0969DA] dark:focus:border-[#1F6FEB]
-                       focus:ring-2 focus:ring-[#0969DA]/15 dark:focus:ring-[#1F6FEB]/20"
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
+              Email Address
+            </label>
+            <input
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3.5 py-2.5 text-sm rounded-lg border outline-none
+                         bg-[#FFFFFF] dark:bg-[#0D1117]
+                         border-[#D0D7DE] dark:border-[#30363D]
+                         text-[#24292F] dark:text-[#C9D1D9]
+                         placeholder:text-[#8B949E] dark:placeholder:text-[#484F58]
+                         transition-all duration-300
+                         hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                         focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
+            />
+          </div>
 
           {/* Send OTP Button */}
           <button
             onClick={handleSendOtp}
             disabled={loading}
-            className="w-full py-2.5 rounded-lg text-sm font-semibold text-white
-                       transition-all duration-300
-                       bg-[#238636]
-                       hover:bg-[#2EA043]
-                       hover:scale-[1.02]"
+            className="w-full py-2.5 mt-2 text-sm font-semibold rounded-lg text-white
+                       transition-all duration-200 active:scale-[0.98]
+                       bg-[#238636] hover:bg-[#2EA043]
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
           >
             {loading ? 'Sending OTP...' : 'Send OTP'}
           </button>
-
         </div>
       )}
 
+      {/* Step 2: Verify OTP */}
       {step === 2 && (
-
-        <div className="flex flex-col gap-4">
-
+        <div className="flex flex-col gap-5">
           {/* OTP Input */}
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg border outline-none
-                       transition-all duration-300
-                       bg-[#FFFFFF] dark:bg-[#0D1117]
-                       border-[#D0D7DE] dark:border-[#30363D]
-                       text-[#24292F] dark:text-[#C9D1D9]
-                       placeholder:text-[#A0A7AE] dark:placeholder:text-[#484F58]
-                       focus:border-[#0969DA] dark:focus:border-[#1F6FEB]
-                       focus:ring-2 focus:ring-[#0969DA]/15 dark:focus:ring-[#1F6FEB]/20"
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
+              Verification Code
+            </label>
+            <input
+              type="text"
+              placeholder="Enter your OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full px-3.5 py-2.5 text-sm rounded-lg border outline-none
+                         bg-[#FFFFFF] dark:bg-[#0D1117]
+                         border-[#D0D7DE] dark:border-[#30363D]
+                         text-[#24292F] dark:text-[#C9D1D9]
+                         placeholder:text-[#8B949E] dark:placeholder:text-[#484F58]
+                         transition-all duration-300
+                         hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                         focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
+            />
+          </div>
 
           {/* Verify OTP Button */}
           <button
             onClick={handleVerifyOtp}
             disabled={loading}
-            className="w-full py-2.5 rounded-lg text-sm font-semibold text-white
-                       transition-all duration-300
-                       bg-[#238636]
-                       hover:bg-[#2EA043]
-                       hover:scale-[1.02]"
+            className="w-full py-2.5 mt-2 text-sm font-semibold rounded-lg text-white
+                       transition-all duration-200 active:scale-[0.98]
+                       bg-[#238636] hover:bg-[#2EA043]
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
           >
             {loading ? 'Verifying...' : 'Verify OTP'}
           </button>
-
         </div>
       )}
 
-
+      {/* Step 3: Reset Password */}
       {step === 3 && (
-
-        <div className="flex flex-col gap-4">
-
-          {/* New Password */}
-          <div className="relative">
-
-            <input
-              type={showPass ? 'text' : 'password'}
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-3 py-2.5 pr-11 rounded-lg border outline-none
-                         transition-all duration-300
-                         bg-[#FFFFFF] dark:bg-[#0D1117]
-                         border-[#D0D7DE] dark:border-[#30363D]
-                         text-[#24292F] dark:text-[#C9D1D9]
-                         placeholder:text-[#A0A7AE] dark:placeholder:text-[#484F58]
-                         focus:border-[#0969DA] dark:focus:border-[#1F6FEB]
-                         focus:ring-2 focus:ring-[#0969DA]/15 dark:focus:ring-[#1F6FEB]/20"
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowPass(!showPass)}
-              className="absolute right-3 top-1/2 -translate-y-1/2
-                         text-[#57606A] dark:text-[#8B949E]"
-            >
-              {showPass
-                ? <HiOutlineEyeOff className="w-5 h-5" />
-                : <HiOutlineEye className="w-5 h-5" />}
-            </button>
-
+        <div className="flex flex-col gap-5">
+          {/* New Password Input */}
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
+              New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPass ? 'text' : 'password'}
+                placeholder="••••••••"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full px-3.5 py-2.5 pr-11 text-sm rounded-lg border outline-none
+                           bg-[#FFFFFF] dark:bg-[#0D1117]
+                           border-[#D0D7DE] dark:border-[#30363D]
+                           text-[#24292F] dark:text-[#C9D1D9]
+                           placeholder:text-[#8B949E] dark:placeholder:text-[#484F58]
+                           transition-all duration-300
+                           hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                           focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPass(!showPass)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+              >
+                {showPass
+                  ? <HiOutlineEyeOff className="w-5 h-5" />
+                  : <HiOutlineEye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
 
-          {/* Confirm Password */}
-          <div className="relative">
-
-            <input
-              type={showConfirmPass ? 'text' : 'password'}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-3 py-2.5 pr-11 rounded-lg border outline-none
-                         transition-all duration-300
-                         bg-[#FFFFFF] dark:bg-[#0D1117]
-                         border-[#D0D7DE] dark:border-[#30363D]
-                         text-[#24292F] dark:text-[#C9D1D9]
-                         placeholder:text-[#A0A7AE] dark:placeholder:text-[#484F58]
-                         focus:border-[#0969DA] dark:focus:border-[#1F6FEB]
-                         focus:ring-2 focus:ring-[#0969DA]/15 dark:focus:ring-[#1F6FEB]/20"
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowConfirmPass(!showConfirmPass)}
-              className="absolute right-3 top-1/2 -translate-y-1/2
-                         text-[#57606A] dark:text-[#8B949E]"
-            >
-              {showConfirmPass
-                ? <HiOutlineEyeOff className="w-5 h-5" />
-                : <HiOutlineEye className="w-5 h-5" />}
-            </button>
-
+          {/* Confirm Password Input */}
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPass ? 'text' : 'password'}
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-3.5 py-2.5 pr-11 text-sm rounded-lg border outline-none
+                           bg-[#FFFFFF] dark:bg-[#0D1117]
+                           border-[#D0D7DE] dark:border-[#30363D]
+                           text-[#24292F] dark:text-[#C9D1D9]
+                           placeholder:text-[#8B949E] dark:placeholder:text-[#484F58]
+                           transition-all duration-300
+                           hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                           focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPass(!showConfirmPass)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+              >
+                {showConfirmPass
+                  ? <HiOutlineEyeOff className="w-5 h-5" />
+                  : <HiOutlineEye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
 
           {/* Reset Button */}
           <button
             onClick={handleResetPassword}
             disabled={loading}
-            className="w-full py-2.5 rounded-lg text-sm font-semibold text-white
-                       transition-all duration-300
-                       bg-[#238636]
-                       hover:bg-[#2EA043]
-                       hover:scale-[1.02]"
+            className="w-full py-2.5 mt-2 text-sm font-semibold rounded-lg text-white
+                       transition-all duration-200 active:scale-[0.98]
+                       bg-[#238636] hover:bg-[#2EA043]
+                       disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
           >
             {loading ? 'Resetting...' : 'Reset Password'}
           </button>
-
         </div>
       )}
 

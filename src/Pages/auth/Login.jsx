@@ -110,17 +110,17 @@ function Login() {
           <button
             onClick={() => setIsDark(!isDark)}
             aria-label="Toggle theme"
-            className="flex items-center justify-center w-13 h-13 rounded-2xl border text-sm font-medium
+            className="flex items-center justify-center w-12 h-12 rounded-xl border text-sm font-medium
                        transition-all duration-300 hover:scale-105 hover:shadow-md
                        bg-[#FFFFFF] dark:bg-[#21262D]
                        border-[#D0D7DE] dark:border-[#30363D]
                        text-[#57606A] dark:text-[#C9D1D9]
                        hover:bg-[#F6F8FA] dark:hover:bg-[#30363D]
-                       hover:text-[#0969DA] dark:hover:text-[#58A6FF]
-                       hover:border-[#0969DA]/30 dark:hover:border-[#58A6FF]/30"
+                       hover:text-[#bf40bf] dark:hover:text-[#58A6FF]
+                       hover:border-[#bf40bf]/30 dark:hover:border-[#58A6FF]/30"
           >
             {isDark
-              ? <HiSun className="w-6 h-6" />
+              ? <HiSun className="w-6 h-6 animate-pulse" />
               : <HiMoon className="w-6 h-6" />
             }
           </button>
@@ -138,112 +138,106 @@ function Login() {
               LEFT PANEL — Login Form
           ════════════════════════════════════════════════════════════════ */}
           <div className="w-full md:w-1/2 px-10 py-12 flex flex-col justify-center
-                min-h-[500px] transition-colors duration-300
-                bg-[#FFFFFF] dark:bg-[#161B22]">
+                          min-h-[520px] transition-colors duration-300
+                          bg-[#FFFFFF] dark:bg-[#161B22]">
 
             {!showForgot ? (
-
               <>
                 {/* Heading */}
-                <h1 className="text-2xl font-bold text-center mb-1
-                 text-[#24292F] dark:text-[#F0F6FC]">
-                  Welcome Back !!
-                </h1>
-                <br></br>
-                <p className="text-sm text-center mb-8
-                text-[#57606A] dark:text-[#8B949E]">
-                  Login to your ATR panel
-                </p>
+                <div className="text-center mb-8">
+                  <h1 className="text-3xl font-extrabold tracking-tight text-[#24292F] dark:text-[#F0F6FC]">
+                    Welcome Back !!
+                  </h1>
+                  <p className="text-sm mt-2 text-[#57606A] dark:text-[#8B949E]">
+                    Login to your ATR panel
+                  </p>
+                </div>
 
                 {/* Error */}
                 {error && (
-                  <p className="text-xs text-center mb-4 text-[#CF222E] dark:text-[#F85149]">
-                    ⚠️ {error}
-                  </p>
+                  <div className="flex items-center gap-2 justify-center px-4 py-2.5 mb-6 rounded-lg text-xs font-semibold
+                                  bg-[#CF222E]/10 dark:bg-[#F85149]/10 
+                                  text-[#CF222E] dark:text-[#F85149]
+                                  border border-[#CF222E]/20 dark:border-[#F85149]/20">
+                    <span>⚠️</span>
+                    <span>{error}</span>
+                  </div>
                 )}
 
                 {/* LOGIN FORM */}
-                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
 
                   {/* Email */}
-                  <div className="flex flex-col gap-1.5">
-
-                    <label className="text-sm font-medium text-[#24292F] dark:text-[#C9D1D9]">
-                      Email/User Name
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
+                      Email / Username
                     </label>
-
                     <input
                       type="text"
                       placeholder="Username or Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2.5 text-sm rounded-lg border outline-none
-                   bg-[#FFFFFF] dark:bg-[#0D1117]
-                   border-[#D0D7DE] dark:border-[#30363D]
-                   text-[#24292F] dark:text-[#C9D1D9]
-                   transition-all duration-300
-                   hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
-                   focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
+                      className="w-full px-3.5 py-2.5 text-sm rounded-lg border outline-none
+                                 bg-[#FFFFFF] dark:bg-[#0D1117]
+                                 border-[#D0D7DE] dark:border-[#30363D]
+                                 text-[#24292F] dark:text-[#C9D1D9]
+                                 placeholder:text-[#8B949E] dark:placeholder:text-[#484F58]
+                                 transition-all duration-300
+                                 hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                                 focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
                     />
-
                   </div>
 
                   {/* Password */}
-                  <div className="flex flex-col gap-1.5">
-
+                  <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
-
-                      <label className="text-sm font-medium text-[#24292F] dark:text-[#C9D1D9]">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
                         Password
                       </label>
-
                       <button
                         type="button"
                         onClick={() => setShowForgot(true)}
-                        className="text-xs
-                     text-[#0969DA] dark:text-[#58A6FF]
-                     hover:underline"
+                        className="text-xs font-medium text-[#0969DA] dark:text-[#58A6FF] hover:underline"
                       >
                         Forgot your password?
                       </button>
-
                     </div>
 
                     <div className="relative">
-
                       <input
                         type={showPass ? 'text' : 'password'}
+                        placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-3 py-2.5 pr-11 text-sm rounded-lg border outline-none
-                     bg-[#FFFFFF] dark:bg-[#0D1117]
-                     border-[#D0D7DE] dark:border-[#30363D]
-                     text-[#24292F] dark:text-[#C9D1D9]
-                     transition-all duration-300
-                     hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
-                     focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
+                        className="w-full px-3.5 py-2.5 pr-11 text-sm rounded-lg border outline-none
+                                   bg-[#FFFFFF] dark:bg-[#0D1117]
+                                   border-[#D0D7DE] dark:border-[#30363D]
+                                   text-[#24292F] dark:text-[#C9D1D9]
+                                   placeholder:text-[#8B949E] dark:placeholder:text-[#484F58]
+                                   transition-all duration-300
+                                   hover:border-[#bf40bf]/50 dark:hover:border-[#bf40bf]/60
+                                   focus:border-[#bf40bf] focus:ring-2 focus:ring-[#bf40bf]/20 dark:focus:ring-[#bf40bf]/40"
                       />
-
                       <button
                         type="button"
                         onClick={() => setShowPass(!showPass)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                       >
                         {showPass
                           ? <HiOutlineEyeOff className="w-5 h-5" />
                           : <HiOutlineEye className="w-5 h-5" />}
                       </button>
-
                     </div>
-
                   </div>
 
                   {/* Login Button */}
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-2.5 mt-1 text-sm font-semibold rounded-lg text-white
-                 bg-[#238636] hover:bg-[#2EA043]"
+                    className="w-full py-2.5 mt-2 text-sm font-semibold rounded-lg text-white
+                               transition-all duration-200 active:scale-[0.98]
+                               bg-[#238636] hover:bg-[#2EA043]
+                               disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
                   >
                     {loading ? 'Logging in…' : 'Login'}
                   </button>
@@ -254,15 +248,13 @@ function Login() {
                 <p className="text-center text-xs mt-6 text-[#57606A] dark:text-[#8B949E]">
                   Don't have an account?{' '}
                   <a href="/register"
-                    className="font-semibold
-                  text-[#0969DA] dark:text-[#58A6FF]
-                  hover:underline">
+                     className="font-semibold text-[#0969DA] dark:text-[#58A6FF] hover:underline">
                     Sign up
                   </a>
                 </p>
 
                 {/* Powered By */}
-                <div className="flex flex-col items-start mt-8">
+                <div className="flex flex-col items-start mt-8 pt-4 border-t border-gray-100 dark:border-[#30363D]">
                   <p className="text-[10px] uppercase tracking-wider font-semibold text-[#57606A] dark:text-[#8B949E] transition-colors duration-300">
                     Powered By
                   </p>
@@ -273,26 +265,23 @@ function Login() {
                   )}
                 </div>
               </>
-
             ) : (
-
               <ForgotPassword
                 onBack={() => setShowForgot(false)}
               />
-
             )}
 
           </div>
 
           {/* ════════════════════════════════════════════════════════════════
-              RIGHT PANEL — Illustration
+              RIGHT PANEL — Illustration (Professional Blend & Inversion)
           ════════════════════════════════════════════════════════════════ */}
           <div className="hidden md:block md:w-1/2 transition-colors duration-300 overflow-hidden
                           bg-[#F6F8FA] dark:bg-[#21262D]">
             <img
               src={loginIllustration}
               alt="Attendance tracking illustration"
-              className="w-full h-full object-cover animate-zoom"
+              className="w-full h-full object-cover"
             />
           </div>
 
