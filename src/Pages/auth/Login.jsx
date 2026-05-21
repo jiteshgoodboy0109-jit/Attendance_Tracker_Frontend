@@ -129,8 +129,10 @@ function Login() {
         {/* ── Main Card ────────────────────────────────────────────────────── */}
         <div className="flex w-full max-w-5xl rounded-2xl overflow-hidden
                         transition-all duration-500
-                        shadow-premium-light dark:shadow-premium-dark
-                        hover:shadow-premium-hover-light dark:hover:shadow-premium-hover-dark
+                        shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12),0_0_40px_rgba(191,64,191,0.06),0_1px_3px_rgba(0,0,0,0.03)]
+                        dark:shadow-[0_30px_60px_rgba(0,0,0,0.8),0_0_45px_rgba(191,64,191,0.15)]
+                        hover:shadow-[0_35px_70px_-15px_rgba(0,0,0,0.08),0_30px_65px_-10px_rgba(191,64,191,0.28),0_0_50px_rgba(191,64,191,0.15)]
+                        dark:hover:shadow-[0_40px_80px_rgba(0,0,0,0.95),0_0_60px_rgba(191,64,191,0.4)]
                         border border-[#D0D7DE] dark:border-[#30363D]
                         hover:border-[#bf40bf]/40 dark:hover:border-[#bf40bf]/60">
 

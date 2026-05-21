@@ -4,10 +4,6 @@
 
 @theme {
   --animate-zoom: zoom 5s ease-in-out infinite alternate;
-  --shadow-premium-light: 0 25px 60px -15px rgba(0, 0, 0, 0.12), 0 0 40px rgba(191, 64, 191, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
-  --shadow-premium-dark: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 45px rgba(191, 64, 191, 0.15);
-  --shadow-premium-hover-light: 0 35px 70px -15px rgba(0, 0, 0, 0.08), 0 30px 65px -10px rgba(191, 64, 191, 0.28), 0 0 50px rgba(191, 64, 191, 0.15);
-  --shadow-premium-hover-dark: 0 40px 80px rgba(0, 0, 0, 0.95), 0 0 60px rgba(191, 64, 191, 0.4);
 }
 
 @keyframes zoom {
