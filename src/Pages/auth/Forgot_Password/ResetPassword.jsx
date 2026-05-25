@@ -7,8 +7,7 @@ import {
 
 import { useNavigate } from 'react-router-dom'
 
-// import { resetPassword }
-// from '../../../services/auth/forgotPasswordApi'
+import api from '../../../services/api'
 
 function ResetPassword({
   loading,
@@ -55,31 +54,73 @@ function ResetPassword({
 
       setLoading(true)
 
-      // API CALL
-      /*
-      const data = await resetPassword(
-        newPassword,
-        confirmPassword
-      )
-      */
+      // GET TOKENS FROM LOCAL STORAGE
+      const resetToken =
+        localStorage.getItem(
+          'reset_token'
+        )
 
-      // TEMP SUCCESS
-      const data = {
-        message: 'Password Reset Successful'
+      const tokenIdentifier =
+        localStorage.getItem(
+          'token_identifier'
+        )
+
+      // API CALL
+      const response = await api.post(
+        'auth/password/reset/',
+        {
+          new_password: newPassword,
+
+          token_identifier:
+            tokenIdentifier,
+
+          reset_token:
+            resetToken
+        },
+        {
+          headers: {
+            'Content-Type':
+              'application/json'
+          }
+        }
+      )
+
+      const data = response.data
+
+      if (data.success) {
+
+        setSuccess(
+          data.message ||
+          'Password Reset Successful'
+        )
+
+        // CLEAR TOKENS
+        localStorage.removeItem(
+          'reset_token'
+        )
+
+        localStorage.removeItem(
+          'token_identifier'
+        )
+
+        setTimeout(() => {
+
+          navigate('/')
+
+        }, 1500)
+
+      } else {
+
+        setError(
+          data.message ||
+          'Password reset failed'
+        )
+
       }
 
-      setSuccess(
-        data.message ||
-        'Password Reset Successful'
-      )
-
-      setTimeout(() => {
-
-        navigate('/')
-
-      }, 1500)
-
     } catch (err) {
+
+      console.error(err)
 
       if (err.response?.data?.message) {
 
