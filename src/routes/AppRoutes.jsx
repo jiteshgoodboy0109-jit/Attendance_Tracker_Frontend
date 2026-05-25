@@ -5,6 +5,7 @@ import ForgotPassword from '../Pages/auth/Forgot_Password/ForgotPassword'
 import RegisteredEmail from '../Pages/auth/Forgot_Password/RegisteredEmail'
 import OTPVerify from '../Pages/auth/Forgot_Password/OTPVerify'
 import ResetPassword from '../Pages/auth/Forgot_Password/ResetPassword'
+import Home from '../Pages/auth/Home/Home'
 
 function AppRoutes() {
 
@@ -78,6 +79,10 @@ function AppRoutes() {
             )}
           </ForgotPassword>
         }
+      />
+      <Route
+        path="/dashboard"
+        element={<Home />}
       />
 
     </Routes>
