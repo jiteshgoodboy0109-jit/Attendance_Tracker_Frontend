@@ -3,6 +3,7 @@ import {
   HiMoon,
   HiOutlineX
 } from 'react-icons/hi'
+import { useNavigate } from 'react-router-dom'
 import {
   FiGrid,
   FiUserCheck,
@@ -26,6 +27,7 @@ function Sidebar({
   isSidebarOpen,
   setIsSidebarOpen
 }) {
+  const navigate = useNavigate()
   return (
     <>
       {/* 1. COLLAPSIBLE BACKDROP OVERLAY (Mobile Viewport Only) */}
@@ -85,6 +87,7 @@ function Sidebar({
                   onClick={() => {
                     setActiveMenu(item.name)
                     setIsSidebarOpen(false) // Close drawer on mobile upon selection
+                    navigate(`/${item.name.toLowerCase()}`)
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group
                     ${isActive 
@@ -121,6 +124,7 @@ function Sidebar({
                   onClick={() => {
                     setActiveMenu(item.name)
                     setIsSidebarOpen(false) // Close drawer on mobile
+                    navigate(`/${item.name.toLowerCase()}`)
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group
                     ${isActive 
