@@ -79,6 +79,8 @@ function Home() {
     { id: 'EMP007', name: 'Meera Iyer', role: 'HR Manager', dept: 'Human Resources', date: '25 May 2026', status: 'Present', checkIn: '09:05 AM', checkOut: '05:30 PM', hours: '8.4 hrs', avatar: 'MI', bg: 'bg-indigo-500' }
   ])
 
+  const [hoveredWeek, setHoveredWeek] = useState(null)
+
   // Handle Approvals Actions
   const handleApproval = (id, action, name) => {
     setApprovals(prev => prev.filter(item => item.id !== id))
@@ -184,17 +186,16 @@ function Home() {
             {/* Path Header Indicator */}
             <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-[#bf40bf] dark:text-purple-400">
               <span>Dashboard</span>
-              <span>/</span>
-              <span className="text-slate-400 dark:text-slate-500">Attendance Insights</span>
+             
             </div>
 
             {/* ==========================================
                 TOP SECTION: REALTIME CLOCK & 2x3 STATS GRID
                 ========================================== */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
               
               {/* LEFT CARD: Digital Clock & Configurations */}
-              <div className="relative overflow-hidden p-8 rounded-2xl border backdrop-blur-md transition-all duration-300 flex flex-col justify-between h-64
+              <div className="relative overflow-hidden p-5 rounded-2xl border backdrop-blur-md transition-all duration-300 flex flex-col justify-between h-auto gap-6
                               bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-lg shadow-slate-100/10 dark:shadow-black/20 hover:border-[#bf40bf]/40 dark:hover:border-[#bf40bf]/30">
                 
                 {/* Ambient glow inside card */}
@@ -223,46 +224,13 @@ function Home() {
                       {time.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </p>
                   </div>
-
-                  <button 
-                    onClick={handleCheckIn}
-                    className={`w-full py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:scale-[1.01]
-                      ${isCheckedIn 
-                        ? 'bg-gradient-to-r from-rose-500 to-red-500 text-white border-rose-600/30 shadow-rose-500/20 hover:shadow-rose-500/35' 
-                        : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white border-blue-600/30 shadow-blue-500/20 hover:shadow-blue-500/35'
-                      }`}
-                  >
-                    <FiSliders className="w-4 h-4" />
-                    <span>{isCheckedIn ? 'Log Check-Out' : 'Advanced Configuration'}</span>
-                  </button>
                 </div>
               </div>
 
-              {/* RIGHT GRID: 2x3 High-End Metric Cards */}
-              <div className="xl:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* RIGHT GRID: 3 Balanced Metric Cards */}
+              <div className="xl:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6">
                 
-                {/* Metric 1: Total Employees */}
-                <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-[#bf40bf]/5">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <p className="text-3xl font-black tracking-tight text-slate-850 dark:text-white leading-none">
-                        {stats.employees}
-                      </p>
-                      <p className="text-[10px] font-black tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-                        Total Employees
-                      </p>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                      <HiOutlineUserGroup className="w-5 h-5 text-blue-550 dark:text-blue-400" />
-                    </div>
-                  </div>
-                  <p className="text-[9px] font-semibold text-emerald-600 dark:text-emerald-450 mt-4 flex items-center gap-1.5 uppercase tracking-wide">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    + 2 new employees added!
-                  </p>
-                </div>
-
-                {/* Metric 2: On Time */}
+                {/* Metric 1: Present */}
                 <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-emerald-500/5">
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
@@ -270,7 +238,7 @@ function Home() {
                         {stats.present}
                       </p>
                       <p className="text-[10px] font-black tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-                        On Time
+                        Present
                       </p>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
@@ -283,7 +251,7 @@ function Home() {
                   </p>
                 </div>
 
-                {/* Metric 3: Absent */}
+                {/* Metric 2: Absent */}
                 <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-rose-500/5">
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
@@ -295,75 +263,24 @@ function Home() {
                       </p>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20">
-                      <HiOutlineCloud className="w-5 h-5 text-rose-600 dark:text-rose-450" />
+                      <HiOutlineCloud className="w-5 h-5 text-rose-600 dark:text-rose-455" />
                     </div>
                   </div>
-                  <p className="text-[9px] font-semibold text-rose-600 dark:text-rose-450 mt-4 flex items-center gap-1.5 uppercase tracking-wide">
+                  <p className="text-[9px] font-semibold text-rose-600 dark:text-rose-455 mt-4 flex items-center gap-1.5 uppercase tracking-wide">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-605" />
                     +3% Increase than yesterday
                   </p>
                 </div>
 
-                {/* Metric 4: Late Arrival */}
-                <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-amber-500/5">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <p className="text-3xl font-black tracking-tight text-slate-850 dark:text-white leading-none">
-                        {stats.pending}
-                      </p>
-                      <p className="text-[10px] font-black tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-                        Late Arrival
-                      </p>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
-                      <HiOutlineExclamationCircle className="w-5 h-5 text-amber-600 dark:text-amber-450" />
-                    </div>
+                {/* Metric 3: Blank Card Placeholder */}
+                <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/30 flex flex-col justify-center items-center min-h-[110px] group">
+                  {/* Subtle glassmorphic decorative background gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <div className="w-8 h-8 rounded-full border border-dashed border-slate-350 dark:border-slate-700/60 flex items-center justify-center text-slate-350 dark:text-slate-500 group-hover:border-[#bf40bf]/40 group-hover:text-[#bf40bf]/60 transition-all duration-300">
+                    <span className="text-sm font-light">+</span>
                   </div>
-                  <p className="text-[9px] font-semibold text-rose-600 dark:text-rose-450 mt-4 flex items-center gap-1.5 uppercase tracking-wide">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-605" />
-                    +3% Increase than yesterday
-                  </p>
-                </div>
-
-                {/* Metric 5: Early Departures */}
-                <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-[#bf40bf]/5">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <p className="text-3xl font-black tracking-tight text-slate-850 dark:text-white leading-none">
-                        6
-                      </p>
-                      <p className="text-[10px] font-black tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-                        Early Departures
-                      </p>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-[#bf40bf]/10 flex items-center justify-center border border-[#bf40bf]/20">
-                      <HiOutlineMoon className="w-5 h-5 text-[#bf40bf] dark:text-purple-400" />
-                    </div>
-                  </div>
-                  <p className="text-[9px] font-semibold text-emerald-600 dark:text-emerald-455 mt-4 flex items-center gap-1.5 uppercase tracking-wide">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    -10% Less than yesterday
-                  </p>
-                </div>
-
-                {/* Metric 6: Time-off */}
-                <div className="relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-500/5">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <p className="text-3xl font-black tracking-tight text-slate-850 dark:text-white leading-none">
-                        {stats.leave}
-                      </p>
-                      <p className="text-[10px] font-black tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-                        Time-off
-                      </p>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-slate-500/10 flex items-center justify-center border border-slate-500/20">
-                      <HiOutlineCalendar className="w-5 h-5 text-slate-550 dark:text-slate-455" />
-                    </div>
-                  </div>
-                  <p className="text-[9px] font-semibold text-slate-400 mt-4 flex items-center gap-1.5 uppercase tracking-wide">
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-                    2% Increase than yesterday
+                  <p className="text-[10px] font-black text-slate-350 dark:text-slate-500 uppercase tracking-widest mt-2 group-hover:text-purple-400 transition-all duration-300">
+                    Placeholder
                   </p>
                 </div>
 
@@ -374,56 +291,57 @@ function Home() {
                 MIDDLE CHARTS SECTION: SPLINE SPLIT & WEEKLY BARS
                 ========================================== */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
-              {/* Left spline curve spline chart — 2/3 Width */}
-              <div className="lg:col-span-2 p-6 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+              <div className="lg:col-span-2 p-6 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/30 relative overflow-hidden group">
+                {/* Subtle internal glowing filter */}
+                <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-500/10 transition-all duration-500" />
+                
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 z-10 relative">
                   <div>
                     <h2 className="text-base font-bold text-slate-850 dark:text-white tracking-tight">
                       Attendance Comparison Chart
                     </h2>
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5">
+                      Daily Activity Analytics
+                    </p>
                   </div>
-                  {/* High-fidelity selector indicators matching the exact reference style */}
-                  <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-wider">
-                    <button className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
-                      <span className="w-2 h-2 rounded-full bg-blue-600" />
+                  {/* High-fidelity SaaS segmented tab selectors */}
+                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900/60 p-1 rounded-xl border border-slate-200/60 dark:border-slate-800/60">
+                    <button className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider bg-blue-600 text-white shadow-sm transition-all duration-200">
                       Daily
                     </button>
-                    <button className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 hover:text-slate-655">
-                      <span className="w-1.5 h-1.5 rounded-full border border-slate-400" />
+                    <button className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 hover:text-slate-200 transition-all duration-200">
                       Weekly
                     </button>
-                    <button className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 hover:text-slate-655">
-                      <span className="w-1.5 h-1.5 rounded-full border border-slate-400" />
+                    <button className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 hover:text-slate-200 transition-all duration-200">
                       Monthly
                     </button>
                   </div>
                 </div>
 
                 {/* Spline SVG Chart Container */}
-                <div className="h-64 relative">
+                <div className="h-64 relative z-10 mt-4">
                   <svg viewBox="0 0 800 240" className="w-full h-full" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="splineGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#2563EB" stopOpacity="0.25" />
-                        <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
                       </linearGradient>
                     </defs>
                     
                     {/* Horizontal helper grid lines */}
                     {[0, 60, 120, 180, 240].map((yVal, idx) => (
-                      <line key={idx} x1="40" y1={yVal} x2="780" y2={yVal} stroke="#D0D7DE" strokeWidth="0.5" strokeDasharray="3 3" className="dark:stroke-slate-800/40" />
+                      <line key={idx} x1="40" y1={yVal} x2="780" y2={yVal} stroke="#D0D7DE" strokeWidth="0.5" strokeDasharray="3 3" className="dark:stroke-slate-800/30" />
                     ))}
                     
                     {/* Spline Curve Fill Area */}
                     <path d="M40 160 C 100 120, 120 170, 170 140 C 220 110, 240 70, 290 80 C 340 90, 360 170, 410 140 C 460 110, 480 180, 530 140 C 580 100, 600 130, 650 150 C 700 170, 720 130, 780 100 L 780 240 L 40 240 Z" fill="url(#splineGradient)" />
                     
                     {/* Spline Spline Curve Path */}
-                    <path d="M40 160 C 100 120, 120 170, 170 140 C 220 110, 240 70, 290 80 C 340 90, 360 170, 410 140 C 460 110, 480 180, 530 140 C 580 100, 600 130, 650 150 C 700 170, 720 130, 780 100" fill="none" stroke="#2563EB" strokeWidth="3" className="drop-shadow-[0_4px_8px_rgba(37,99,235,0.4)]" />
+                    <path d="M40 160 C 100 120, 120 170, 170 140 C 220 110, 240 70, 290 80 C 340 90, 360 170, 410 140 C 460 110, 480 180, 530 140 C 580 100, 600 130, 650 150 C 700 170, 720 130, 780 100" fill="none" stroke="#3B82F6" strokeWidth="3.5" className="drop-shadow-[0_4px_12px_rgba(59,130,246,0.5)]" />
                     
                     {/* Vertical guideline on high value */}
-                    <line x1="290" y1="20" x2="290" y2="240" stroke="#2563EB" strokeWidth="1.5" strokeDasharray="2 2" className="opacity-80" />
-                    <rect x="272" y="5" width="36" height="18" rx="9" fill="#2563EB" className="shadow-[0_0_12px_rgba(37,99,235,0.5)]" />
+                    <line x1="290" y1="20" x2="290" y2="240" stroke="#3B82F6" strokeWidth="1.5" strokeDasharray="2 2" className="opacity-80" />
+                    <rect x="272" y="5" width="36" height="18" rx="9" fill="#3B82F6" className="shadow-[0_0_12px_rgba(59,130,246,0.6)]" />
                     <text x="290" y="17" fill="white" fontSize="9" fontWeight="bold" textAnchor="middle">91%</text>
 
                     {/* Nodes on points */}
@@ -437,12 +355,12 @@ function Home() {
                       { x: 650, y: 150 },
                       { x: 780, y: 100 }
                     ].map((pt, i) => (
-                      <circle key={i} cx={pt.x} cy={pt.y} r="4" fill="#2563EB" stroke="white" strokeWidth="1.5" className="dark:stroke-[#0C0F16] cursor-pointer hover:r-5 transition-all" />
+                      <circle key={i} cx={pt.x} cy={pt.y} r="4.5" fill="#3B82F6" stroke="white" strokeWidth="2" className="dark:stroke-[#0C0F16] cursor-pointer hover:r-6 transition-all duration-200" />
                     ))}
                   </svg>
 
                   {/* Spline Chart X-Axis Labels */}
-                  <div className="flex justify-between text-[8px] font-black text-slate-400 dark:text-slate-550 uppercase tracking-wider mt-4 px-2">
+                  <div className="flex justify-between text-[8px] font-black text-slate-400 dark:text-slate-550 uppercase tracking-widest mt-4 px-4">
                     <span>01 Aug</span>
                     <span>02 Aug</span>
                     <span>03 Aug</span>
@@ -453,63 +371,178 @@ function Home() {
                     <span>10 Aug</span>
                     <span>11 Aug</span>
                     <span>14 Aug</span>
-                    <span>15 Aug</span>
-                    <span>16 Aug</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right weekly column bars chart — 1/3 Width */}
-              <div className="p-6 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-base font-bold text-slate-850 dark:text-white tracking-tight">
-                    Monthly Meeting
-                  </h2>
+              {/* Right weekly line graph — 1/3 Width */}
+              <div className="p-6 rounded-2xl border transition-all duration-300 bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:border-[#bf40bf]/30 relative overflow-hidden group">
+                {/* Internal ambient glowing filter for Right Chart */}
+                <div className="absolute top-0 right-0 w-36 h-36 bg-purple-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-purple-500/10 transition-all duration-500" />
+                
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 z-10 relative">
+                  <div>
+                    <h2 className="text-base font-bold text-slate-850 dark:text-white tracking-tight">
+                      Monthly Attendance 
+                    </h2>
+                    <p className="text-[10px] text-slate-400 dark:text-slate-555 uppercase tracking-widest mt-0.5">
+                      Last 5 Weeks Trend
+                    </p>
+                  </div>cd 
+                  {/* Legend Indicators in Capsule/Pill Style */}
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[8px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                      Present
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-455 text-[8px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                      Absent
+                    </span>
+                  </div>
                 </div>
 
-                {/* Columns Bar Chart Display */}
-                <div className="h-64 flex items-end justify-between px-4 pb-6 relative">
-                  
-                  {/* Horizontal background grids */}
-                  <div className="absolute inset-0 flex flex-col justify-between pb-[54px] pt-[20px] pointer-events-none">
-                    {[1, 2, 3, 4].map(lineIdx => (
-                      <div key={lineIdx} className="w-full border-t border-slate-100 dark:border-slate-850/45" />
-                    ))}
-                  </div>
-
-                  {/* Individual Columns */}
-                  {[
-                    { dept: 'Sales', val: 40, active: false },
-                    { dept: 'IT', val: 60, active: false },
-                    { dept: 'Marketing', val: 86, active: true },
-                    { dept: 'Legal', val: 60, active: false },
-                    { dept: 'API', val: 40, active: false }
-                  ].map(barItem => (
-                    <div key={barItem.dept} className="flex flex-col items-center gap-3 w-10 z-10 group cursor-pointer">
+                {/* Horizontal Line SVG Chart Container */}
+                <div className="h-60 relative z-10 mt-4 flex flex-col justify-between">
+                  <div className="relative flex-1">
+                    <svg viewBox="0 0 380 240" className="w-full h-full" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="presentLineGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
+                          <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+                        </linearGradient>
+                        <linearGradient id="absentLineGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#F43F5E" stopOpacity="0.15" />
+                          <stop offset="100%" stopColor="#F43F5E" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
                       
-                      {/* Active highlighted percent tag on top of bar */}
-                      {barItem.active && (
-                        <div className="bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full mb-1 tracking-wider shadow-[0_0_10px_rgba(37,99,235,0.4)]">
-                          {barItem.val}%
-                        </div>
-                      )}
-
-                      {/* Bar capsule container */}
-                      <div className="h-36 w-6 rounded-md bg-slate-50 dark:bg-slate-800/20 overflow-hidden flex flex-col justify-end shadow-inner border border-slate-100 dark:border-slate-850/10">
-                        <div 
-                          style={{ height: `${barItem.val}%` }} 
-                          className={`w-full rounded-md transition-all duration-300 group-hover:brightness-110
-                            ${barItem.active 
-                              ? 'bg-gradient-to-t from-blue-650 to-blue-400 dark:from-blue-600 dark:to-blue-350 shadow-[0_0_12px_rgba(37,99,235,0.3)]' 
-                              : 'bg-slate-350 dark:bg-slate-800/70'
-                            }`}
+                      {/* Horizontal helper grid lines at 0%, 25%, 50%, 75%, 100% */}
+                      {[30, 75, 120, 165, 210].map((yVal, idx) => (
+                        <line 
+                          key={idx} 
+                          x1="30" 
+                          y1={yVal} 
+                          x2="350" 
+                          y2={yVal} 
+                          stroke="#D0D7DE" 
+                          strokeWidth="0.5" 
+                          strokeDasharray="3 3" 
+                          className="dark:stroke-slate-800/30" 
                         />
-                      </div>
-                      <span className="text-[8px] font-black text-slate-400 dark:text-slate-550 uppercase tracking-widest leading-none rotate-45 mt-2 origin-left">
-                        {barItem.dept}
-                      </span>
-                    </div>
-                  ))}
+                      ))}
+
+                      {/* Percentage Labels on left of Y-axis */}
+                      <g className="text-[8px] font-black text-slate-400 dark:text-slate-650 tracking-wider">
+                        <text x="22" y="33" textAnchor="end">100%</text>
+                        <text x="22" y="78" textAnchor="end">75%</text>
+                        <text x="22" y="123" textAnchor="end">50%</text>
+                        <text x="22" y="168" textAnchor="end">25%</text>
+                        <text x="22" y="213" textAnchor="end">0%</text>
+                      </g>
+                      
+                      {/* Area fill under Present line */}
+                      <path 
+                        d="M 50 48 L 120 57 L 190 40.8 L 260 51.6 L 330 44.4 L 330 210 L 50 210 Z" 
+                        fill="url(#presentLineGradient)" 
+                      />
+
+                      {/* Present line path */}
+                      <path 
+                        d="M 50 48 L 120 57 L 190 40.8 L 260 51.6 L 330 44.4" 
+                        fill="none" 
+                        stroke="#3B82F6" 
+                        strokeWidth="2.5" 
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="drop-shadow-[0_2px_8px_rgba(59,130,246,0.4)]"
+                      />
+
+                      {/* Area fill under Absent line */}
+                      <path 
+                        d="M 50 192 L 120 183 L 190 199.2 L 260 188.4 L 330 195.6 L 330 210 L 50 210 Z" 
+                        fill="url(#absentLineGradient)" 
+                      />
+
+                      {/* Absent line path */}
+                      <path 
+                        d="M 50 192 L 120 183 L 190 199.2 L 260 188.4 L 330 195.6" 
+                        fill="none" 
+                        stroke="#F43F5E" 
+                        strokeWidth="2.5" 
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="drop-shadow-[0_2px_8px_rgba(244,63,94,0.4)]"
+                      />
+
+                      {/* Dynamic Present Data Points & Value text */}
+                      {[
+                        { x: 50, y: 48, val: '90%' },
+                        { x: 120, y: 57, val: '85%' },
+                        { x: 190, y: 40.8, val: '94%' },
+                        { x: 260, y: 51.6, val: '88%' },
+                        { x: 330, y: 44.4, val: '92%' }
+                      ].map((pt, i) => (
+                        <g key={`pres-${i}`} className="group/node cursor-pointer">
+                          <circle 
+                            cx={pt.x} 
+                            cy={pt.y} 
+                            r="4" 
+                            fill="#3B82F6" 
+                            stroke="white" 
+                            strokeWidth="1.5" 
+                            className="dark:stroke-[#0C0F16] transition-all duration-200 group-hover/node:r-5.5 group-hover/node:fill-white group-hover/node:stroke-[#3B82F6]" 
+                          />
+                          <text 
+                            x={pt.x} 
+                            y={pt.y - 8} 
+                            textAnchor="middle" 
+                            className="text-[9px] font-black fill-blue-600 dark:fill-blue-400 opacity-0 group-hover/node:opacity-100 transition-opacity duration-200"
+                          >
+                            {pt.val}
+                          </text>
+                        </g>
+                      ))}
+
+                      {/* Dynamic Absent Data Points & Value text */}
+                      {[
+                        { x: 50, y: 192, val: '10%' },
+                        { x: 120, y: 183, val: '15%' },
+                        { x: 190, y: 199.2, val: '6%' },
+                        { x: 260, y: 188.4, val: '12%' },
+                        { x: 330, y: 195.6, val: '8%' }
+                      ].map((pt, i) => (
+                        <g key={`abs-${i}`} className="group/node cursor-pointer">
+                          <circle 
+                            cx={pt.x} 
+                            cy={pt.y} 
+                            r="4" 
+                            fill="#F43F5E" 
+                            stroke="white" 
+                            strokeWidth="1.5" 
+                            className="dark:stroke-[#0C0F16] transition-all duration-200 group-hover/node:r-5.5 group-hover/node:fill-white group-hover/node:stroke-[#F43F5E]" 
+                          />
+                          <text 
+                            x={pt.x} 
+                            y={pt.y - 8} 
+                            textAnchor="middle" 
+                            className="text-[9px] font-black fill-rose-600 dark:fill-rose-400 opacity-0 group-hover/node:opacity-100 transition-opacity duration-200"
+                          >
+                            {pt.val}
+                          </text>
+                        </g>
+                      ))}
+                    </svg>
+                  </div>
+                  
+                  {/* Spline Chart X-Axis Labels */}
+                  <div className="flex justify-between text-[8px] font-black text-slate-400 dark:text-slate-555 uppercase tracking-widest mt-2 px-8">
+                    <span>Week 1</span>
+                    <span>Week 2</span>
+                    <span>Week 3</span>
+                    <span>Week 4</span>
+                    <span>Week 5</span>
+                  </div>
                 </div>
               </div>
 

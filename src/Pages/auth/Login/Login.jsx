@@ -93,7 +93,7 @@ function Login() {
           response.data.user
         )
 
-        // navigate('/dashboard')
+        navigate('/home')
       }
 
     } catch (err) {

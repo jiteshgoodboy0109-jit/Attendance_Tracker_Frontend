@@ -1,9 +1,11 @@
+import { useState, useEffect } from 'react'
 import {
   HiSun,
   HiMoon,
   HiOutlineSearch,
   HiOutlineBell,
-  HiOutlineChevronDown
+  HiOutlineChevronDown,
+  HiOutlineMenu
 } from 'react-icons/hi'
 
 function Navbar({
@@ -16,14 +18,31 @@ function Navbar({
   notifications,
   setNotifications,
   showNotificationDropdown,
-  setShowNotificationDropdown
+  setShowNotificationDropdown,
+  isSidebarOpen,
+  setIsSidebarOpen
 }) {
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+
   return (
-    <header className="h-16 px-8 flex-shrink-0 flex items-center justify-between border-b transition-colors duration-300
+    <header className="h-16 px-3 sm:px-8 flex-shrink-0 flex items-center justify-between border-b transition-colors duration-300
                       bg-white dark:bg-[#08090C] border-slate-200 dark:border-slate-800/60 sticky top-0 z-30">
       
-      {/* Search Input Container */}
-      <div className="flex items-center gap-2 max-w-md w-full">
+      {/* Search Input Container with Mobile Hamburger */}
+      <div className="flex items-center gap-1.5 sm:gap-2 max-w-[220px] sm:max-w-md flex-shrink-0">
+        {/* Mobile Hamburger Drawer Trigger */}
+        <button 
+          onClick={() => setIsSidebarOpen(true)}
+          className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl border text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-[#111625]/40 border-slate-200 dark:border-slate-800/60 hover:bg-slate-100 dark:hover:bg-[#111625] transition-colors"
+        >
+          <HiOutlineMenu className="w-5 h-5" />
+        </button>
+
         <button 
           onClick={() => setShowSearch(!showSearch)}
           className="w-9 h-9 flex items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -35,7 +54,7 @@ function Navbar({
           placeholder="Search anything..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className={`w-64 px-3 py-1.5 text-xs rounded-lg border outline-none bg-transparent transition-all duration-300
+          className={`w-32 sm:w-64 px-3 py-1.5 text-xs rounded-lg border outline-none bg-transparent transition-all duration-300
             ${showSearch || searchQuery 
               ? 'opacity-100 scale-100 pointer-events-auto border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white' 
               : 'opacity-0 scale-95 pointer-events-none border-transparent text-transparent w-0'
@@ -44,7 +63,7 @@ function Navbar({
       </div>
 
       {/* Right Side Widgets (Theme, Alerts, Profile) */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
         
         {/* Shortcut Theme Icon */}
         <button
@@ -109,20 +128,15 @@ function Navbar({
           )}
         </div>
 
-        {/* User Avatar dropdown */}
-        <div className="flex items-center gap-3 pl-3 border-l border-slate-200 dark:border-slate-800/60">
-          <div className="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-white shadow-md shadow-emerald-500/20 text-xs">
-            J
-          </div>
-          <div className="hidden sm:block text-left">
-            <p className="text-xs font-bold leading-tight text-slate-800 dark:text-white">
-              Jitesh
-            </p>
-            <p className="text-[9px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-              Super Admin
-            </p>
-          </div>
-          <HiOutlineChevronDown className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+        {/* Dynamic Realtime Date & Time Indicator */}
+        <div className="flex flex-col items-end pl-1.5 sm:pl-3.5 border-l border-slate-200 dark:border-slate-800/60 text-right whitespace-nowrap">
+          <p className="text-xs sm:text-sm font-extrabold tracking-tight text-slate-800 dark:text-white leading-none">
+            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+          </p>
+          <p className="text-[8px] sm:text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
+            {currentTime.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+            <span className="hidden sm:inline"> {currentTime.getFullYear()}</span>
+          </p>
         </div>
       </div>
     </header>
