@@ -8,12 +8,7 @@ import {
     FiChevronLeft,
     FiChevronRight,
     FiCheck,
-    FiPlus,
-    FiTrash2,
-    FiEye,
-    FiEyeOff,
-    FiClock,
-    FiX
+    FiClock
 } from 'react-icons/fi'
 
 /**
@@ -69,43 +64,8 @@ function Dashboard({
         }
     ])
     const [openDescriptionId, setOpenDescriptionId] = useState(null)
-    const [showAddTaskForm, setShowAddTaskForm] = useState(false)
-    const [newTaskName, setNewTaskName] = useState('')
-    const [newTaskAssignedDate, setNewTaskAssignedDate] = useState('27 May 2026')
-    const [newTaskDueDate, setNewTaskDueDate] = useState('')
-    const [newTaskDesc, setNewTaskDesc] = useState('')
 
-    const toggleDescription = (id) => {
-        setOpenDescriptionId(prev => prev === id ? null : id)
-    }
-
-    const handleAddTask = (e) => {
-        e.preventDefault()
-        if (!newTaskName.trim() || !newTaskDueDate.trim() || !newTaskDesc.trim()) return
-
-        const newId = tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1
-        const newTask = {
-            id: newId,
-            name: newTaskName,
-            assignedDate: newTaskAssignedDate || "27 May 2026",
-            dueDate: newTaskDueDate,
-            description: newTaskDesc
-        }
-
-        setTasks(prev => [...prev, newTask])
-        // Reset form fields
-        setNewTaskName('')
-        setNewTaskDueDate('')
-        setNewTaskDesc('')
-        setShowAddTaskForm(false)
-    }
-
-    const handleDeleteTask = (id) => {
-        setTasks(prev => prev.filter(t => t.id !== id))
-        if (openDescriptionId === id) {
-            setOpenDescriptionId(null)
-        }
-    }
+    const toggleDescription = (id) => setOpenDescriptionId(prev => prev === id ? null : id)
 
     // ==========================================
     // 2. EFFECT FOR RUNNING ACTIVE WORKER TIMER
@@ -169,18 +129,10 @@ function Dashboard({
     // ==========================================
     // 4. TIMER FORMATTING UTILITY
     // ==========================================
-    const formatTimer = (totalSecs) => {
-        const hrs = Math.floor(totalSecs / 3600)
-        const mins = Math.floor((totalSecs % 3600) / 60)
-        const secs = totalSecs % 60
-        return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-    }
+    const formatTimer = (s) => 
+        `${Math.floor(s / 3600).toString().padStart(2, '0')}:${Math.floor((s % 3600) / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`
 
-    const getElapsedHoursMinsStr = (totalSecs) => {
-        const hrs = Math.floor(totalSecs / 3600)
-        const mins = Math.floor((totalSecs % 3600) / 60)
-        return `${hrs}h ${mins}m`
-    }
+    const getElapsedHoursMinsStr = (s) => `${Math.floor(s / 3600)}h ${Math.floor((s % 3600) / 60)}m`
 
     // ==========================================
     // 5. CALENDAR DATA GENERATION (May 2026)
@@ -209,21 +161,9 @@ function Dashboard({
     }
 
     const getDaysInMonth = () => {
-        const year = calendarMonth.getFullYear()
-        const month = calendarMonth.getMonth()
-        const firstDayIndex = new Date(year, month, 1).getDay()
-        const totalDays = new Date(year, month + 1, 0).getDate()
-
-        const days = []
-        // Pad with empty spots for preceding month
-        for (let i = 0; i < firstDayIndex; i++) {
-            days.push(null)
-        }
-        // Fill active days
-        for (let d = 1; d <= totalDays; d++) {
-            days.push(d)
-        }
-        return days
+        const firstDayIndex = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1).getDay()
+        const totalDays = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 0).getDate()
+        return [...Array(firstDayIndex).fill(null), ...Array.from({ length: totalDays }, (_, i) => i + 1)]
     }
 
     const daysGrid = getDaysInMonth()
@@ -280,12 +220,10 @@ function Dashboard({
           bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-md hover:shadow-xl
           hover:border-[#bf40bf]/30 dark:hover:border-purple-900/30">
 
-                    {/* Subtle Ambient Glow overlay (Checked In: glowing green, Checkout: glowing blue, Not Checked In: glowing purple) */}
-                    <div className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl pointer-events-none transition-all duration-700
-            ${checkInStatus === 'not_checked_in' && 'bg-purple-600/[0.04] dark:bg-purple-600/5 group-hover:scale-125'}
-            ${checkInStatus === 'working' && 'bg-emerald-600/[0.04] dark:bg-emerald-600/5 group-hover:scale-125'}
-            ${checkInStatus === 'done' && 'bg-blue-600/[0.04] dark:bg-blue-600/5 group-hover:scale-125'}
-          `} />
+                    {/* Subtle Ambient Glow overlay */}
+                    <div className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl pointer-events-none transition-all duration-700 group-hover:scale-125
+                        ${{ not_checked_in: 'bg-purple-600/[0.04] dark:bg-purple-600/5', working: 'bg-emerald-600/[0.04] dark:bg-emerald-600/5', done: 'bg-blue-600/[0.04] dark:bg-blue-600/5' }[checkInStatus]}
+                    `} />
 
                     {/* TOP HEADER SECTION */}
                     <div className="flex justify-between items-start z-10">
@@ -300,27 +238,19 @@ function Dashboard({
 
                         {/* Pill status badge */}
                         <div>
-                            {checkInStatus === 'not_checked_in' && (
-                                <span className="px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm
-                  bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800/60 text-slate-500 dark:text-slate-400">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-450 dark:bg-slate-500 animate-pulse" />
-                                    Not checked in
-                                </span>
-                            )}
-                            {checkInStatus === 'working' && (
-                                <span className="px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm
-                  bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-450">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                                    Working
-                                </span>
-                            )}
-                            {checkInStatus === 'done' && (
-                                <span className="px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm
-                  bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-550 dark:bg-blue-400" />
-                                    Done for today
-                                </span>
-                            )}
+                            {(() => {
+                                const badge = {
+                                    not_checked_in: { text: "Not checked in", cls: "bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-850/60 text-slate-500 dark:text-slate-400", dot: "bg-slate-450 dark:bg-slate-500 animate-pulse" },
+                                    working: { text: "Working", cls: "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-450", dot: "bg-emerald-500 animate-ping" },
+                                    done: { text: "Done for today", cls: "bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400", dot: "bg-blue-550 dark:bg-blue-400" }
+                                }[checkInStatus]
+                                return (
+                                    <span className={`px-3 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm ${badge.cls}`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
+                                        {badge.text}
+                                    </span>
+                                )
+                            })()}
                         </div>
                     </div>
 
@@ -403,66 +333,34 @@ function Dashboard({
                     <div className="space-y-4 z-10">
                         {/* Checked In card detail card */}
                         {checkInStatus !== 'not_checked_in' && (
-                            <div className="p-4 rounded-2xl border transition-all duration-300 animate-fade-in
-                bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-850/60">
-
-                                {checkInStatus === 'working' ? (
-                                    <div className="flex items-center justify-between">
-                                        <div className="space-y-0.5">
-                                            <p className="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                                                Checked in
-                                            </p>
-                                            <p className="text-sm font-black text-slate-800 dark:text-white">
-                                                {checkInTime}
-                                            </p>
-                                        </div>
-                                        {/* Late badge pill */}
-                                        <span className="px-2.5 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-405 text-[8px] font-black uppercase tracking-wider">
-                                            Late
-                                        </span>
+                            <div className="p-4 rounded-2xl border transition-all duration-300 animate-fade-in bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-850/60">
+                                <div className={`grid gap-4 ${checkInStatus === 'done' ? 'grid-cols-2 divide-x divide-slate-200 dark:divide-slate-850/50' : 'flex items-center justify-between'}`}>
+                                    <div className="space-y-0.5 text-left">
+                                        <p className="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Checked in</p>
+                                        <p className="text-sm font-black text-slate-850 dark:text-white flex items-center gap-1.5">
+                                            {checkInTime}
+                                            {checkInStatus === 'done' && (
+                                                <span className="px-1.5 py-0.5 rounded border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[7px] font-black uppercase">Late</span>
+                                            )}
+                                        </p>
                                     </div>
-                                ) : (
-                                    <div className="grid grid-cols-2 divide-x divide-slate-200 dark:divide-slate-850/50">
-                                        <div className="space-y-0.5 text-left pr-4">
-                                            <p className="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                                                Checked in
-                                            </p>
-                                            <p className="text-sm font-black text-slate-850 dark:text-white flex items-center gap-1.5">
-                                                {checkInTime}
-                                                <span className="px-1.5 py-0.5 rounded border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[7px] font-black uppercase">
-                                                    Late
-                                                </span>
-                                            </p>
-                                        </div>
+                                    {checkInStatus === 'working' ? (
+                                        <span className="px-2.5 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-405 text-[8px] font-black uppercase tracking-wider">Late</span>
+                                    ) : (
                                         <div className="space-y-0.5 text-left pl-4">
-                                            <p className="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                                                Checked out
-                                            </p>
-                                            <p className="text-sm font-black text-slate-850 dark:text-white">
-                                                {checkOutTime}
-                                            </p>
+                                            <p className="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Checked out</p>
+                                            <p className="text-sm font-black text-slate-850 dark:text-white">{checkOutTime}</p>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         )}
 
-                        {/* Captures geolocation metadata footer */}
                         <div className="flex items-center justify-center gap-1.5 text-center">
                             {checkInStatus === 'not_checked_in' ? (
-                                <>
-                                    <FiMapPin className="w-3.5 h-3.5 text-rose-500" />
-                                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                                        Location will be captured on check-in
-                                    </span>
-                                </>
+                                <><FiMapPin className="w-3.5 h-3.5 text-rose-500" /><span className="text-[10px] font-bold text-slate-500 dark:text-slate-400">Location will be captured on check-in</span></>
                             ) : (
-                                <>
-                                    <FiAlertTriangle className="w-3.5 h-3.5 text-amber-500" />
-                                    <span className="text-[10px] font-bold text-rose-500">
-                                        Location unavailable
-                                    </span>
-                                </>
+                                <><FiAlertTriangle className="w-3.5 h-3.5 text-amber-500" /><span className="text-[10px] font-bold text-rose-500">Location unavailable</span></>
                             )}
                         </div>
                     </div>
@@ -637,43 +535,29 @@ function Dashboard({
                                 <div
                                     key={`day-${dayNum}`}
                                     className={`aspect-square flex flex-col justify-center items-center rounded-2xl relative cursor-pointer group/cell select-none transition-all duration-300
-                    ${isToday
-                                            ? 'border border-[#bf40bf]/40 bg-[#bf40bf]/5 dark:bg-purple-500/5'
-                                            : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
-                                        }`}
+                                        ${isToday ? 'border border-[#bf40bf]/40 bg-[#bf40bf]/5 dark:bg-purple-500/5' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'}`}
                                 >
                                     {/* Date label */}
                                     <span className={`text-xs font-bold leading-none transition-colors duration-200
-                    ${isToday
-                                            ? 'text-[#bf40bf] dark:text-purple-400 font-extrabold scale-110'
-                                            : 'text-slate-850 dark:text-slate-200 group-hover/cell:text-[#bf40bf] dark:group-hover/cell:text-purple-400'
-                                        }`}>
+                                        ${isToday ? 'text-[#bf40bf] dark:text-purple-400 font-extrabold scale-110' : 'text-slate-850 dark:text-slate-200 group-hover/cell:text-[#bf40bf] dark:group-hover/cell:text-purple-400'}`}>
                                         {dayNum}
                                     </span>
 
-                                    {/* Dynamic indicator dots (Perfect sizing and color palette) */}
+                                    {/* Dynamic indicator dots */}
                                     <div className="h-1.5 flex items-center justify-center mt-1">
-                                        {status === 'present' && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-450 shadow-sm shadow-emerald-500/40" />
-                                        )}
-                                        {status === 'working' && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping" />
-                                        )}
-                                        {status === 'late' && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 shadow-sm shadow-amber-500/40" />
-                                        )}
-                                        {status === 'absent' && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-450 shadow-sm shadow-rose-500/40" />
-                                        )}
-                                        {status === 'leave' && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-600" />
-                                        )}
-                                        {status === 'today' && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-[#bf40bf] dark:bg-purple-400 animate-pulse shadow-sm shadow-purple-500/40" />
+                                        {status && (
+                                            <span className={`w-1.5 h-1.5 rounded-full shadow-sm ${{
+                                                present: 'bg-emerald-500 dark:bg-emerald-455 shadow-emerald-500/40',
+                                                working: 'bg-emerald-500 dark:bg-emerald-400 animate-ping',
+                                                late: 'bg-amber-500 dark:bg-amber-400 shadow-amber-500/40',
+                                                absent: 'bg-rose-500 dark:bg-rose-455 shadow-rose-500/40',
+                                                leave: 'bg-slate-400 dark:bg-slate-600 shadow-none',
+                                                today: 'bg-[#bf40bf] dark:bg-purple-400 animate-pulse shadow-purple-500/40'
+                                            }[status]}`} />
                                         )}
                                     </div>
 
-                                    {/* Hover visual highlight bar at absolute bottom */}
+                                    {/* Hover highlight bar */}
                                     <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full bg-[#bf40bf] dark:bg-purple-400 transition-all duration-300 group-hover/cell:w-4" />
                                 </div>
                             )
@@ -682,22 +566,17 @@ function Dashboard({
 
                     {/* LEGEND BADGES BAR */}
                     <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-6 pt-4 border-t border-slate-100 dark:border-slate-850/30 z-10">
-                        <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm" />
-                            Present
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-sm" />
-                            Late
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-sm" />
-                            Absent
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-600 shadow-sm" />
-                            Holiday/Leave
-                        </span>
+                        {[
+                            { color: 'bg-emerald-500', label: 'Present' },
+                            { color: 'bg-amber-500', label: 'Late' },
+                            { color: 'bg-rose-500', label: 'Absent' },
+                            { color: 'bg-slate-400 dark:bg-slate-600', label: 'Holiday/Leave' }
+                        ].map((badge, idx) => (
+                            <span key={idx} className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                <span className={`w-1.5 h-1.5 rounded-full ${badge.color} shadow-sm`} />
+                                {badge.label}
+                            </span>
+                        ))}
                     </div>
 
                 </div>
