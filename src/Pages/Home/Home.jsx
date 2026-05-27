@@ -10,16 +10,7 @@ import {
   FiCalendar,
   FiFileText,
   FiGithub,
-  FiVideo,
-  FiCheckCircle,
-  FiClock,
-  FiPlus,
-  FiDownload,
-  FiSettings,
-  FiExternalLink,
-  FiFile,
-  FiCheck,
-  FiXCircle
+  FiVideo
 } from 'react-icons/fi'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
@@ -823,12 +814,12 @@ function Home({ defaultMenu = 'Home' }) {
                               <td className="py-4 px-4 font-semibold text-slate-600 dark:text-slate-400">{row.dept}</td>
                               <td className="py-4 px-4 text-slate-400 font-semibold">{row.date}</td>
                               <td className="py-4 px-4">
-                                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border
-                              ${row.status === 'Present' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20' : ''}
-                              ${row.status === 'Late' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' : ''}
-                              ${row.status === 'Absent' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-450 border-rose-500/20' : ''}
-                              ${row.status === 'On Leave' ? 'bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20' : ''}
-                            `}>
+                                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${{
+                                  Present: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20',
+                                  Late: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+                                  Absent: 'bg-rose-500/10 text-rose-600 dark:text-rose-450 border-rose-500/20',
+                                  'On Leave': 'bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20'
+                                }[row.status] || ''}`}>
                                   {row.status}
                                 </span>
                               </td>
