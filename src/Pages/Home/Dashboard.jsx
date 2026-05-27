@@ -7,7 +7,13 @@ import {
     FiCalendar,
     FiChevronLeft,
     FiChevronRight,
-    FiCheck
+    FiCheck,
+    FiPlus,
+    FiTrash2,
+    FiEye,
+    FiEyeOff,
+    FiClock,
+    FiX
 } from 'react-icons/fi'
 
 /**
@@ -35,6 +41,71 @@ function Dashboard({
     const [calendarMonth, setCalendarMonth] = useState(new Date(2026, 4, 1)) // May 2026
 
     const timerRef = useRef(null)
+
+    // ==========================================
+    // TASK MANAGER STATE & ACTION HANDLERS
+    // ==========================================
+    const [tasks, setTasks] = useState([
+        {
+            id: 1,
+            name: "Task 1: Design Premium UI/UX Guidelines",
+            assignedDate: "25 May 2026",
+            dueDate: "29 May 2026",
+            description: "Create premium high-fidelity wireframes and establish the global design tokens, color palette, and micro-animations for the Attendance Tracker application."
+        },
+        {
+            id: 2,
+            name: "Task 2: Integrate Interactive Calendar API",
+            assignedDate: "26 May 2026",
+            dueDate: "01 Jun 2026",
+            description: "Connect the frontend interactive monthly calendar grid with Google Calendar and local logs to fetch real-time employee attendance events dynamically."
+        },
+        {
+            id: 3,
+            name: "Task 3: Refactor State Management & Auth Flow",
+            assignedDate: "26 May 2026",
+            dueDate: "28 May 2026",
+            description: "Migrate the active worker session states and global theme provider to a centralized context API to resolve synchronization bugs."
+        }
+    ])
+    const [openDescriptionId, setOpenDescriptionId] = useState(null)
+    const [showAddTaskForm, setShowAddTaskForm] = useState(false)
+    const [newTaskName, setNewTaskName] = useState('')
+    const [newTaskAssignedDate, setNewTaskAssignedDate] = useState('27 May 2026')
+    const [newTaskDueDate, setNewTaskDueDate] = useState('')
+    const [newTaskDesc, setNewTaskDesc] = useState('')
+
+    const toggleDescription = (id) => {
+        setOpenDescriptionId(prev => prev === id ? null : id)
+    }
+
+    const handleAddTask = (e) => {
+        e.preventDefault()
+        if (!newTaskName.trim() || !newTaskDueDate.trim() || !newTaskDesc.trim()) return
+
+        const newId = tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1
+        const newTask = {
+            id: newId,
+            name: newTaskName,
+            assignedDate: newTaskAssignedDate || "27 May 2026",
+            dueDate: newTaskDueDate,
+            description: newTaskDesc
+        }
+
+        setTasks(prev => [...prev, newTask])
+        // Reset form fields
+        setNewTaskName('')
+        setNewTaskDueDate('')
+        setNewTaskDesc('')
+        setShowAddTaskForm(false)
+    }
+
+    const handleDeleteTask = (id) => {
+        setTasks(prev => prev.filter(t => t.id !== id))
+        if (openDescriptionId === id) {
+            setOpenDescriptionId(null)
+        }
+    }
 
     // ==========================================
     // 2. EFFECT FOR RUNNING ACTIVE WORKER TIMER
@@ -190,6 +261,14 @@ function Dashboard({
                 }
                 .pulse-delay-2 {
                     animation-delay: 1.8s;
+                }
+                /* Invisible scrollbar utility */
+                .no-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .no-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
                 }
             `}</style>
 
@@ -392,9 +471,102 @@ function Dashboard({
             </div>
 
             {/* =========================================================
-          RIGHT COLUMN: GORGEOUS MONTHLY CALENDAR GRID (Cols: 7/12)
+          RIGHT COLUMN: PREMIUM TASK MANAGER SECTION (Cols: 7/12)
           ========================================================= */}
             <div className="lg:col-span-7 flex">
+                <div className="w-full rounded-3xl border p-6 flex flex-col justify-between min-h-[500px] transition-all duration-300 relative overflow-hidden group
+          bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-md hover:shadow-xl
+          hover:border-[#bf40bf]/30 dark:hover:border-purple-900/30">
+
+                    {/* Ambient Glow */}
+                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl pointer-events-none bg-purple-600/[0.04] dark:bg-purple-600/5 group-hover:scale-125 transition-all duration-700" />
+
+                    {/* TOP HEADER SECTION */}
+                    <div>
+                        <div className="flex justify-between items-center z-10 mb-4">
+                            <div className="space-y-0.5">
+                                <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                                    Organization Tasks
+                                </p>
+                                <h3 className="text-lg font-black text-slate-850 dark:text-white leading-tight">
+                                    Task Manager
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* TASKS LIST CONTAINER (Scrollable with invisible scrollbar) */}
+                    <div className="flex-grow overflow-y-auto no-scrollbar max-h-[380px] space-y-3 z-10 pr-0.5">
+                        {tasks.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-slate-500">
+                                <FiCheck className="w-10 h-10 mb-2 stroke-1" />
+                                <p className="text-xs font-bold uppercase tracking-wider">All tasks completed!</p>
+                            </div>
+                        ) : (
+                            tasks.map((task) => {
+                                const isExpanded = openDescriptionId === task.id;
+                                return (
+                                    <div
+                                        key={task.id}
+                                        onClick={() => toggleDescription(task.id)}
+                                        className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer select-none
+                                            bg-slate-50/50 dark:bg-slate-900/20 border-slate-200/80 dark:border-slate-850/60
+                                            hover:border-[#bf40bf]/30 dark:hover:border-purple-500/30 hover:bg-slate-100/30 dark:hover:bg-slate-900/40
+                                            ${isExpanded ? 'border-[#bf40bf]/30 dark:border-purple-500/30 bg-slate-100/30 dark:bg-slate-900/40 shadow-inner' : ''}`}
+                                    >
+                                        <div className="flex justify-between items-start gap-4">
+                                            <div className="space-y-1">
+                                                <h4 className="text-xs font-black text-slate-850 dark:text-white leading-tight">
+                                                    {task.name}
+                                                </h4>
+
+                                                {/* Dates Row */}
+                                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
+                                                    <span className="text-[10px] text-slate-450 dark:text-slate-500 flex items-center gap-1">
+                                                        <FiCalendar className="w-3 h-3 text-[#bf40bf]/60 dark:text-purple-400/60" />
+                                                        <span className="font-semibold uppercase tracking-wider">Assigned:</span> {task.assignedDate}
+                                                    </span>
+                                                    <span className="text-[10px] text-slate-450 dark:text-slate-500 flex items-center gap-1">
+                                                        <FiClock className="w-3 h-3 text-rose-500/60" />
+                                                        <span className="font-semibold uppercase tracking-wider text-rose-600/70 dark:text-rose-450/70">Due:</span> {task.dueDate}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* Expand/Collapse Chevron Indicator */}
+                                            <div className={`transition-transform duration-300 mt-0.5 text-slate-400 dark:text-slate-500 ${isExpanded ? '-rotate-90 text-[#bf40bf] dark:text-purple-400' : 'rotate-0'}`}>
+                                                <FiChevronLeft className="w-4 h-4" />
+                                            </div>
+                                        </div>
+
+                                        {/* Expandable description block */}
+                                        {isExpanded && (
+                                            <div className="mt-2.5 p-3 rounded-xl bg-white dark:bg-[#070A0F] border border-slate-100 dark:border-slate-850/40 text-[11px] text-slate-650 dark:text-slate-400 leading-relaxed animate-fade-in shadow-inner">
+                                                {task.description}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+
+                    {/* FOOTER WIDGET */}
+                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100 dark:border-slate-850/30 z-10 text-[9px] font-bold text-slate-450 dark:text-slate-500">
+                        <span>Total: {tasks.length} active tasks</span>
+                        <span className="flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#bf40bf] animate-pulse" />
+                            Live sync active
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* =========================================================
+          BOTTOM COLUMN: GORGEOUS MONTHLY CALENDAR GRID (Cols: 12/12)
+          ========================================================= */}
+            <div className="lg:col-span-12 flex">
                 <div className="w-full rounded-3xl border p-6 flex flex-col justify-between min-h-[500px] transition-all duration-300 relative overflow-hidden group
           bg-white dark:bg-[#0C0F16] border-slate-200/60 dark:border-slate-800/60 shadow-md hover:shadow-xl
           hover:border-[#bf40bf]/30 dark:hover:border-purple-900/30">
@@ -405,7 +577,7 @@ function Dashboard({
                         <button
                             onClick={prevMonth}
                             className="w-9 h-9 rounded-xl border flex items-center justify-center transition-all duration-200
-                bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-850/60 text-slate-500 dark:text-slate-400 
+                bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-850/60 text-slate-550 dark:text-slate-400 
                 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-850 dark:hover:text-white">
                             <FiChevronLeft className="w-4 h-4" />
                         </button>
@@ -424,7 +596,7 @@ function Dashboard({
                         <button
                             onClick={nextMonth}
                             className="w-9 h-9 rounded-xl border flex items-center justify-center transition-all duration-200
-                bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-850/60 text-slate-500 dark:text-slate-400 
+                bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-850/60 text-slate-550 dark:text-slate-400 
                 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-850 dark:hover:text-white">
                             <FiChevronRight className="w-4 h-4" />
                         </button>
