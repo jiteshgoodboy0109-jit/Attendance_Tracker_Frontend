@@ -15,9 +15,12 @@ import {
   HiMoon
 } from 'react-icons/hi'
 
+import { FiAlertCircle } from 'react-icons/fi'
+
 import loginIllustration from '../../../assets/login-illustration.png'
 import darkLogo from '../../../assets/Darklogo.WEBP'
 import whiteLogo from '../../../assets/Whitelogo.WEBP'
+import logoAtr from '../../../assets/logo atr .webp'
 
 import api from '../../../services/api'
 
@@ -181,6 +184,15 @@ function Login() {
                           min-h-[520px] transition-colors duration-300
                           bg-[#FFFFFF] dark:bg-[#161B22]">
 
+            {/* Logo */}
+            <div className="flex justify-center mb-4">
+              <img 
+                src={logoAtr} 
+                className="h-12 w-auto object-contain" 
+                alt="ATR Logo" 
+              />
+            </div>
+
             {/* Heading */}
             <div className="text-center mb-8">
 
@@ -201,7 +213,7 @@ function Login() {
                               text-[#CF222E] dark:text-[#F85149]
                               border border-[#CF222E]/20 dark:border-[#F85149]/20">
 
-                <span>⚠️</span>
+                <FiAlertCircle className="w-4 h-4 text-[#CF222E] dark:text-[#F85149]" />
 
                 <span>{error}</span>
 

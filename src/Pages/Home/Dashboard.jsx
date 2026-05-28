@@ -8,7 +8,8 @@ import {
     FiChevronLeft,
     FiChevronRight,
     FiCheck,
-    FiClock
+    FiClock,
+    FiMoon
 } from 'react-icons/fi'
 
 /**
@@ -320,8 +321,9 @@ function Dashboard({
                                         <h4 className="text-sm font-black text-slate-850 dark:text-white leading-tight">
                                             Great work today!
                                         </h4>
-                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                            See you tomorrow 🌙
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center justify-center gap-1.5">
+                                            <span>See you tomorrow</span>
+                                            <FiMoon className="w-3.5 h-3.5 text-indigo-400 dark:text-indigo-400" />
                                         </p>
                                     </div>
                                 </div>

@@ -11,8 +11,11 @@ import {
   FiFileText,
   FiGithub,
   FiVideo,
-  FiAward
+  FiAward,
+  FiZap
 } from 'react-icons/fi'
+
+import logoAtr from '../../assets/logo atr .webp'
 
 /**
  * Sidebar Component
@@ -48,10 +51,12 @@ function Sidebar({
         {/* Brand Logo Header */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800/60 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#bf40bf] flex items-center justify-center font-bold text-white shadow-lg shadow-[#bf40bf]/20">
-              J
-            </div>
-            <span className="text-lg font-bold tracking-tight text-slate-800 dark:text-white">
+            <img 
+              src={logoAtr} 
+              className="w-8 h-8 rounded-lg object-contain shadow-md" 
+              alt="ATR Logo" 
+            />
+            <span className="text-base font-extrabold tracking-wider text-slate-800 dark:text-white">
               ATR
             </span>
           </div>
@@ -124,7 +129,8 @@ function Sidebar({
             <div className="flex items-start justify-between">
               <div className="space-y-1 z-10">
                 <p className="text-xs font-semibold text-white flex items-center gap-1.5">
-                  <span className="text-amber-500 animate-bounce">🔥</span> 12 day streak
+                  <FiZap className="w-3.5 h-3.5 text-amber-500 animate-pulse fill-amber-500" />
+                  <span>12 day streak</span>
                 </p>
                 <p className="text-[10px] text-purple-200/70">Keep it going!</p>
               </div>

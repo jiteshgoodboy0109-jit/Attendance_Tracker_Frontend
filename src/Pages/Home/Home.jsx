@@ -15,6 +15,7 @@ import {
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 import Dashboard from './Dashboard'
+import Leave from './Leave'
 
 
 function Home({ defaultMenu = 'Home' }) {
@@ -26,6 +27,11 @@ function Home({ defaultMenu = 'Home' }) {
   const [activeMenu, setActiveMenu] = useState(defaultMenu)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [splinePeriod, setSplinePeriod] = useState('Daily')
+  const [leaveHistory, setLeaveHistory] = useState([
+    { id: 3, type: "Casual Leave", duration: "20 Jan 2025 - 21 Jan 2025", days: 2, dates: "20 Jan 2025 to 21 Jan 2025", reason: "Family function — cousin's wedding in Coimbatore", status: "Approved", approver: "Priya Nair", appliedDate: "Applied 10 Jan" },
+    { id: 2, type: "Sick Leave", duration: "8 Jan 2025", days: 1, dates: "8 Jan 2025", reason: "High fever, doctor advised rest", status: "Approved", approver: "Priya Nair", appliedDate: "Applied 8 Jan" },
+    { id: 1, type: "Earned Leave", duration: "14 Feb 2025 - 18 Feb 2025", days: 5, dates: "14 Feb 2025 to 18 Feb 2025", reason: "Annual vacation — Goa trip", status: "Pending", approver: null, appliedDate: "Applied 22 Jan" }
+  ])
 
   // Sync route URL prop changes
   useEffect(() => {
@@ -184,7 +190,7 @@ function Home({ defaultMenu = 'Home' }) {
       }
       return updatedStats
     })
-    alert(`Leave request for ${name} has been ${action === 'approve' ? 'Approved ✅' : 'Rejected ❌'}`)
+    alert(`Leave request for ${name} has been ${action === 'approve' ? 'Approved' : 'Rejected'}`)
   }
 
   /**
@@ -843,6 +849,16 @@ function Home({ defaultMenu = 'Home' }) {
                 isCheckedIn={isCheckedIn}
                 checkInTime={checkInTime}
                 handleCheckIn={handleCheckIn}
+              />
+            )}
+
+            {activeMenu === 'Leave' && (
+              <Leave 
+                leaveHistory={leaveHistory} 
+                setLeaveHistory={setLeaveHistory}
+                approvals={approvals}
+                setApprovals={setApprovals}
+                handleApproval={handleApproval}
               />
             )}
 
