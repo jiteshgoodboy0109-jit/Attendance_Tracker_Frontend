@@ -12,10 +12,10 @@ import {
   FiGithub,
   FiVideo
 } from 'react-icons/fi'
-import Sidebar from './Sidebar'
-import Navbar from './Navbar'
-import Dashboard from './Dashboard'
-import Leave from './Leave'
+import Sidebar from '../../components/layout/Sidebar'
+import Navbar from '../../components/layout/Navbar'
+import Dashboard from '../dashboard/Dashboard'
+import Leave from '../leave/Leave'
 
 
 function Home({ defaultMenu = 'Home' }) {
