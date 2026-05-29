@@ -1,47 +1,33 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { FcGoogle } from 'react-icons/fc'
 import {
   FaApple,
   FaMeta
 } from 'react-icons/fa6'
-
-import { FcGoogle } from 'react-icons/fc'
-
 import {
   HiOutlineEye,
   HiOutlineEyeOff,
   HiSun,
   HiMoon
 } from 'react-icons/hi'
-
 import { FiAlertCircle } from 'react-icons/fi'
-
 import loginIllustration from '../../../assets/login-illustration.png'
 import darkLogo from '../../../assets/Darklogo.WEBP'
 import whiteLogo from '../../../assets/Whitelogo.WEBP'
 import logoAtr from '../../../assets/logo atr .webp'
-
-import api from '../../../services/api'
+import { loginUser } from '../../../services/AuthService'
 
 function Login() {
 
   const navigate = useNavigate()
-
-  // ── State ─────────────────────────────────────
   const [isDark, setIsDark] = useState(true)
-
   const [email, setEmail] = useState('')
-
   const [password, setPassword] = useState('')
-
   const [showPass, setShowPass] = useState(false)
-
   const [loading, setLoading] = useState(false)
-
   const [error, setError] = useState('')
 
-  // ── Login Submit ──────────────────────────────
   const handleSubmit = async (e) => {
 
     e.preventDefault()
@@ -59,42 +45,31 @@ function Login() {
 
       setLoading(true)
 
-      const response = await api.post(
-        'auth/login/',
-        {
-          login: email,
-          password: password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+      const data = await loginUser(
+        email,
+        password
       )
 
-      if (response.data.success) {
+      if (data.success) {
 
         localStorage.setItem(
           'access_token',
-          response.data.access_token
+         data.access_token
         )
 
         localStorage.setItem(
           'refresh_token',
-          response.data.refresh_token
+           data.refresh_token
         )
 
         localStorage.setItem(
-          'user',
-          JSON.stringify(response.data.user)
+          'user',JSON.stringify(data.user),
+          JSON.stringify(data.user)
         )
 
-        alert(response.data.message)
+       alert(data.message)
 
-        console.log(
-          'User:',
-          response.data.user
-        )
+     console.log('User:', data.user)
 
         navigate('/home')
       }
@@ -186,10 +161,10 @@ function Login() {
 
             {/* Logo */}
             <div className="flex justify-center mb-4">
-              <img 
-                src={logoAtr} 
-                className="h-12 w-auto object-contain" 
-                alt="ATR Logo" 
+              <img
+                src={logoAtr}
+                className="h-12 w-auto object-contain"
+                alt="ATR Logo"
               />
             </div>
 
@@ -347,20 +322,7 @@ function Login() {
 
             </form>
 
-            {/* Signup */}
-            <p className="text-center text-xs mt-6 text-[#57606A] dark:text-[#8B949E]">
-
-              Don't have an account?{' '}
-
-              <a
-                href="/register"
-
-                className="font-semibold text-[#0969DA] dark:text-[#58A6FF] hover:underline"
-              >
-                Sign up
-              </a>
-
-            </p>
+          
 
             {/* Powered By */}
             <div className="flex flex-col items-start mt-8 pt-4 border-t border-gray-100 dark:border-[#30363D]">

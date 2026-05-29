@@ -1,8 +1,6 @@
 import { useState } from 'react'
-
 import { useNavigate } from 'react-router-dom'
-
-import api from '../../../services/api'
+import { verifyOtp } from '../../../services/AuthService'
 
 function OTPVerify({
 
@@ -38,18 +36,15 @@ function OTPVerify({
 
       setLoading(true)
 
-      const response = await api.post(
-        'auth/otp/verify/',
-        {
-          otp: Number(otp),
-          email: email,
-          purpose: 'PASSWORD_RESET'
-        }
+      const {
+        data,
+        status
+      } = await verifyOtp(
+        otp,
+        email
       )
 
-      const data = response.data
-
-      if (response.status === 200) {
+      if (status === 200) {
 
         localStorage.setItem(
           'reset_token',

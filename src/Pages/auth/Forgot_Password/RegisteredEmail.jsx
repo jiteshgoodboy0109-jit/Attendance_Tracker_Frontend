@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import api from '../../../services/api'
+import { sendOtp } from '../../../services/AuthService'
 
 function RegisteredEmail({
 
@@ -31,15 +31,7 @@ function RegisteredEmail({
 
       setLoading(true)
 
-      const response = await api.post(
-        'auth/otp/send/',
-        {
-          email,
-          purpose: 'PASSWORD_RESET'
-        }
-      )
-
-      const data = response.data
+      const data = await sendOtp(email)
 
       localStorage.setItem(
         'reset_email',

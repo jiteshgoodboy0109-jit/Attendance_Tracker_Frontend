@@ -1,13 +1,7 @@
 import { useState } from 'react'
-
-import {
-  HiOutlineEye,
-  HiOutlineEyeOff
-} from 'react-icons/hi'
-
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
-
-import api from '../../../services/api'
+import { resetPassword } from '../../../services/AuthService'
 
 function ResetPassword({
   loading,
@@ -65,27 +59,11 @@ function ResetPassword({
           'token_identifier'
         )
 
-      // API CALL
-      const response = await api.post(
-        'auth/password/reset/',
-        {
-          new_password: newPassword,
-
-          token_identifier:
-            tokenIdentifier,
-
-          reset_token:
-            resetToken
-        },
-        {
-          headers: {
-            'Content-Type':
-              'application/json'
-          }
-        }
+      const data = await resetPassword(
+        newPassword,
+        tokenIdentifier,
+        resetToken
       )
-
-      const data = response.data
 
       if (data.success) {
 
