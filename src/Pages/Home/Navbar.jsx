@@ -23,6 +23,7 @@ function Navbar({
   setIsSidebarOpen
 }) {
   const [currentTime, setCurrentTime] = useState(new Date())
+  const btnClass = "w-9 h-9 flex items-center justify-center rounded-xl border transition-colors bg-slate-50 dark:bg-[#111625]/40 border-slate-200 dark:border-slate-800/60 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#111625] hover:text-slate-800 dark:hover:text-white"
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -68,26 +69,16 @@ function Navbar({
         {/* Shortcut Theme Icon */}
         <button
           onClick={() => setIsDark(!isDark)}
-          className="w-9 h-9 flex items-center justify-center rounded-xl border transition-colors duration-300
-                     bg-slate-50 dark:bg-[#111625]/40 
-                     border-slate-200 dark:border-slate-800/60
-                     text-slate-500 dark:text-slate-400
-                     hover:bg-slate-100 dark:hover:bg-[#111625]
-                     hover:text-slate-800 dark:hover:text-white"
+          className={btnClass}
         >
           {isDark ? <HiSun className="w-5 h-5 text-amber-500" /> : <HiMoon className="w-5 h-5" />}
         </button>
-
+ 
         {/* Notification Alerts Bell with dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowNotificationDropdown(!showNotificationDropdown)}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border relative transition-colors duration-300
-                       bg-slate-50 dark:bg-[#111625]/40 
-                       border-slate-200 dark:border-slate-800/60
-                       text-slate-500 dark:text-slate-400
-                       hover:bg-slate-100 dark:hover:bg-[#111625]
-                       hover:text-slate-800 dark:hover:text-white"
+            className={`${btnClass} relative`}
           >
             <HiOutlineBell className="w-5 h-5" />
             {notifications.filter(n => !n.read).length > 0 && (

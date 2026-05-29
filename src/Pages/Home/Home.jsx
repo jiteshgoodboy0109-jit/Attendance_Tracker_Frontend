@@ -10,20 +10,12 @@ import {
   FiCalendar,
   FiFileText,
   FiGithub,
-  FiVideo,
-  FiCheckCircle,
-  FiClock,
-  FiPlus,
-  FiDownload,
-  FiSettings,
-  FiExternalLink,
-  FiFile,
-  FiCheck,
-  FiXCircle
+  FiVideo
 } from 'react-icons/fi'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 import Dashboard from './Dashboard'
+import Leave from './Leave'
 
 
 function Home({ defaultMenu = 'Home' }) {
@@ -35,6 +27,11 @@ function Home({ defaultMenu = 'Home' }) {
   const [activeMenu, setActiveMenu] = useState(defaultMenu)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [splinePeriod, setSplinePeriod] = useState('Daily')
+  const [leaveHistory, setLeaveHistory] = useState([
+    { id: 3, type: "Casual Leave", duration: "20 Jan 2025 - 21 Jan 2025", days: 2, dates: "20 Jan 2025 to 21 Jan 2025", reason: "Family function — cousin's wedding in Coimbatore", status: "Approved", approver: "Priya Nair", appliedDate: "Applied 10 Jan" },
+    { id: 2, type: "Sick Leave", duration: "8 Jan 2025", days: 1, dates: "8 Jan 2025", reason: "High fever, doctor advised rest", status: "Approved", approver: "Priya Nair", appliedDate: "Applied 8 Jan" },
+    { id: 1, type: "Earned Leave", duration: "14 Feb 2025 - 18 Feb 2025", days: 5, dates: "14 Feb 2025 to 18 Feb 2025", reason: "Annual vacation — Goa trip", status: "Pending", approver: null, appliedDate: "Applied 22 Jan" }
+  ])
 
   // Sync route URL prop changes
   useEffect(() => {
@@ -193,7 +190,7 @@ function Home({ defaultMenu = 'Home' }) {
       }
       return updatedStats
     })
-    alert(`Leave request for ${name} has been ${action === 'approve' ? 'Approved ✅' : 'Rejected ❌'}`)
+    alert(`Leave request for ${name} has been ${action === 'approve' ? 'Approved' : 'Rejected'}`)
   }
 
   /**
@@ -823,12 +820,12 @@ function Home({ defaultMenu = 'Home' }) {
                               <td className="py-4 px-4 font-semibold text-slate-600 dark:text-slate-400">{row.dept}</td>
                               <td className="py-4 px-4 text-slate-400 font-semibold">{row.date}</td>
                               <td className="py-4 px-4">
-                                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border
-                              ${row.status === 'Present' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20' : ''}
-                              ${row.status === 'Late' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' : ''}
-                              ${row.status === 'Absent' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-450 border-rose-500/20' : ''}
-                              ${row.status === 'On Leave' ? 'bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20' : ''}
-                            `}>
+                                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${{
+                                  Present: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20',
+                                  Late: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+                                  Absent: 'bg-rose-500/10 text-rose-600 dark:text-rose-450 border-rose-500/20',
+                                  'On Leave': 'bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20'
+                                }[row.status] || ''}`}>
                                   {row.status}
                                 </span>
                               </td>
@@ -852,6 +849,16 @@ function Home({ defaultMenu = 'Home' }) {
                 isCheckedIn={isCheckedIn}
                 checkInTime={checkInTime}
                 handleCheckIn={handleCheckIn}
+              />
+            )}
+
+            {activeMenu === 'Leave' && (
+              <Leave 
+                leaveHistory={leaveHistory} 
+                setLeaveHistory={setLeaveHistory}
+                approvals={approvals}
+                setApprovals={setApprovals}
+                handleApproval={handleApproval}
               />
             )}
 

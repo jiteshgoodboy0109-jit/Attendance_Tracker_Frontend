@@ -87,6 +87,10 @@ function AppRoutes() {
         path="/dashboard"
         element={<Home defaultMenu="Dashboard" />}
       />
+      <Route
+        path="/leave"
+        element={<Home defaultMenu="Leave" />}
+      />
 
     </Routes>
   )
