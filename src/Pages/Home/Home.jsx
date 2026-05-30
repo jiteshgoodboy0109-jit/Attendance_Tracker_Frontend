@@ -5,6 +5,8 @@ import Navbar from '../../components/layout/Navbar'
 
 import Dashboard from '../dashboard/Dashboard'
 import Leave from '../leave/Leave'
+import Github from '../Github/Github'
+
 
 import DigitalClockCard from '../../components/home/DigitalClockCard'
 import StatsCards from '../../components/home/StatsCards'
@@ -256,6 +258,11 @@ const filteredTeam = teamMembers.filter(m =>
                 setApprovals={setApprovals}
               />
             )}
+
+            {activeMenu === 'GitHub' && (
+              <Github />
+            )}
+
 
           </main>
 
