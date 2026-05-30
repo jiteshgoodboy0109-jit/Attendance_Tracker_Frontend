@@ -95,6 +95,10 @@ function AppRoutes() {
         path="/github"
         element={<Home defaultMenu="GitHub" />}
       />
+      <Route
+        path="/reports"
+        element={<Home defaultMenu="Reports" />}
+      />
 
     </Routes>
   )
