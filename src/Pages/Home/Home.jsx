@@ -16,6 +16,8 @@ import Sidebar from '../../components/layout/Sidebar'
 import Navbar from '../../components/layout/Navbar'
 import Dashboard from '../dashboard/Dashboard'
 import Leave from '../leave/Leave'
+import Github from '../Github/Github'
+
 
 
 function Home({ defaultMenu = 'Home' }) {
@@ -860,6 +862,10 @@ function Home({ defaultMenu = 'Home' }) {
                 setApprovals={setApprovals}
                 handleApproval={handleApproval}
               />
+            )}
+
+            {activeMenu === 'GitHub' && (
+              <Github />
             )}
 
 
