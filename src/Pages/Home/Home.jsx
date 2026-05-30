@@ -6,7 +6,6 @@ import Navbar from '../../components/layout/Navbar'
 import Dashboard from '../dashboard/Dashboard'
 import Leave from '../leave/Leave'
 
-import BackgroundEffects from '../../components/home/BackgroundEffects'
 import DigitalClockCard from '../../components/home/DigitalClockCard'
 import StatsCards from '../../components/home/StatsCards'
 import AttendanceChart from '../../components/home/AttendanceChart'
@@ -205,7 +204,6 @@ const filteredTeam = teamMembers.filter(m =>
 
           <main className="flex-1 p-6 relative">
 
-            <BackgroundEffects />
 
             {activeMenu === 'Home' && (
               <div className="space-y-8">
