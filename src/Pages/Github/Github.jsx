@@ -4,7 +4,6 @@ import {
     FiGitCommit,
     FiGitBranch,
     FiActivity,
-    FiCpu,
     FiCode,
     FiClock,
     FiZap,
