@@ -7,6 +7,7 @@ import Dashboard from '../dashboard/Dashboard'
 import Leave from '../leave/Leave'
 import Github from '../Github/Github'
 import Reports from '../reports/Reports'
+import Task from '../Task/Task'
 
 
 import DigitalClockCard from '../../components/home/DigitalClockCard'
@@ -266,6 +267,10 @@ const filteredTeam = teamMembers.filter(m =>
 
             {activeMenu === 'Reports' && (
               <Reports />
+            )}
+
+            {activeMenu === 'Tasks' && (
+              <Task />
             )}
 
 

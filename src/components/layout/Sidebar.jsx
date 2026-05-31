@@ -9,7 +9,8 @@ import {
   FiFileText,
   FiGithub,
   FiVideo,
-  FiMoreHorizontal
+  FiMoreHorizontal,
+  FiCheckSquare
 } from 'react-icons/fi'
 
 import logoAtr from '../../assets/logo atr .webp'
@@ -75,6 +76,7 @@ function Sidebar({
                 { name: 'Home', icon: FiGrid },
                 { name: 'Dashboard', icon: FiUserCheck },
                 { name: 'Leave', icon: FiCalendar },
+                { name: 'Tasks', icon: FiCheckSquare },
                 { name: 'Reports', icon: FiFileText }
               ]
             },

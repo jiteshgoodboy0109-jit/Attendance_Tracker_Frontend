@@ -99,6 +99,14 @@ function AppRoutes() {
         path="/reports"
         element={<Home defaultMenu="Reports" />}
       />
+      <Route
+        path="/task"
+        element={<Home defaultMenu="Tasks" />}
+      />
+      <Route
+        path="/tasks"
+        element={<Home defaultMenu="Tasks" />}
+      />
 
     </Routes>
   )
