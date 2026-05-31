@@ -1,15 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import Sidebar from '../../components/layout/Sidebar'
-import Navbar from '../../components/layout/Navbar'
-
-import Dashboard from '../dashboard/Dashboard'
-import Leave from '../leave/Leave'
-import Github from '../Github/Github'
-import Reports from '../reports/Reports'
-import Task from '../Task/Task'
-
-
 import DigitalClockCard from '../../components/home/DigitalClockCard'
 import StatsCards from '../../components/home/StatsCards'
 import AttendanceChart from '../../components/home/AttendanceChart'
@@ -181,13 +171,6 @@ const filteredTeam = teamMembers.filter(m =>
           hoveredWeek={hoveredWeek}
           setHoveredWeek={setHoveredWeek}
         />
-            {activeMenu === 'Reports' && (
-              <Reports />
-            )}
-
-            {activeMenu === 'Tasks' && (
-              <Task />
-            )}
 
 
       </div>

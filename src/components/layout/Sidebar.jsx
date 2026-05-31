@@ -21,8 +21,6 @@ import logoAtr from '../../assets/logo atr .webp'
  * Features theme toggle button and a dynamic streak/achievement indicator card.
  */
 function Sidebar({ 
-  isDark, 
-  setIsDark, 
   isSidebarOpen,
   setIsSidebarOpen
 }) {
@@ -35,7 +33,8 @@ function Sidebar({
         { name: 'Home', icon: FiGrid, path: '/home' },
         { name: 'Dashboard', icon: FiUserCheck, path: 'dashboard/' },
         { name: 'Leave', icon: FiCalendar, path: 'leave/' },
-        { name: 'Reports', icon: FiFileText, path: 'reports/' }
+        { name: 'Reports', icon: FiFileText, path: 'reports/' },
+        { name: 'Task', icon: FiCheckSquare, path: 'tasks/' },
       ]
     },
     {
@@ -122,14 +121,6 @@ function Sidebar({
 
         {/* Lower Sidebar Streaks and Settings */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800/60 space-y-4 flex-shrink-0">
-          {/* Streak Widget Card */}
-          {/* <div className="relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-[#1C162E] to-[#0A0713] border border-indigo-900/30 shadow-md">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex items-start justify-between">
-              <div className="space-y-1 z-10">
-                <p className="text-xs font-semibold text-white flex items-center gap-1.5">
-                  <FiZap className="w-3.5 h-3.5 text-amber-500 animate-pulse fill-amber-500" />
-                  <span>12 day streak</span>
           <div className="flex items-center p-1.5 rounded-full transition-all duration-200
                           bg-slate-100 dark:bg-[#161B22] border border-slate-200/40 dark:border-slate-800/40
                           hover:bg-slate-200/50 dark:hover:bg-[#21262D]">
@@ -150,7 +141,7 @@ function Sidebar({
                 </p>
               </div>
             </div>
-          </div> */}
+          </div> 
 
         </div>
       </aside>
