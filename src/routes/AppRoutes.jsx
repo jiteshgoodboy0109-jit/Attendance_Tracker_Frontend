@@ -62,6 +62,34 @@ function AppRoutes() {
           </ForgotPassword>
         }
       />
+      <Route
+        path="/home"
+        element={<Home defaultMenu="Home" />}
+      />
+      <Route
+        path="/dashboard"
+        element={<Home defaultMenu="Dashboard" />}
+      />
+      <Route
+        path="/leave"
+        element={<Home defaultMenu="Leave" />}
+      />
+      <Route
+        path="/github"
+        element={<Home defaultMenu="GitHub" />}
+      />
+      <Route
+        path="/reports"
+        element={<Home defaultMenu="Reports" />}
+      />
+      <Route
+        path="/task"
+        element={<Home defaultMenu="Tasks" />}
+      />
+      <Route
+        path="/tasks"
+        element={<Home defaultMenu="Tasks" />}
+      />
 
       <Route element={<MainLayout />}>
         <Route path="/home" element={<Home />} />
