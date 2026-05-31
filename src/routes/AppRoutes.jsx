@@ -10,6 +10,7 @@ import Github from "../Pages/Github/Github";
 import Leave from "../pages/leave/Leave";
 import Dashboard from "../pages/dashboard/Dashboard";
 import { MainLayout } from "../layouts/MainLayout";
+import Task from "../Pages/Task/Task";
 function AppRoutes() {
   return (
     <Routes>
@@ -62,40 +63,16 @@ function AppRoutes() {
           </ForgotPassword>
         }
       />
-      <Route
-        path="/home"
-        element={<Home defaultMenu="Home" />}
-      />
-      <Route
-        path="/dashboard"
-        element={<Home defaultMenu="Dashboard" />}
-      />
-      <Route
-        path="/leave"
-        element={<Home defaultMenu="Leave" />}
-      />
-      <Route
-        path="/github"
-        element={<Home defaultMenu="GitHub" />}
-      />
-      <Route
-        path="/reports"
-        element={<Home defaultMenu="Reports" />}
-      />
-      <Route
-        path="/task"
-        element={<Home defaultMenu="Tasks" />}
-      />
-      <Route
-        path="/tasks"
-        element={<Home defaultMenu="Tasks" />}
-      />
+    
+      
+  
 
       <Route element={<MainLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/leave" element={<Leave />} />
         <Route path="/github" element={<Github />} />
+        <Route path="/tasks" element={<Task />} />
       </Route>
     </Routes>
   );
