@@ -11,7 +11,80 @@
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(1.08);
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  padding-left: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
+
+
+
+
+/* Dark Theme */
+@theme {
+  --color-dark-primary-text: #F0F6FC;
+  --color-dark-secondary-text: #C1D1D9;
+  --color-dark-default-border: #30363D;
+  --color-dark-muted-border: #21262D;
+  --color-dark-main-bg: #0D1117;
+}
+
+
+
+
+
+@keyframes ripple-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.75;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
+.concentric-pulse {
+  animation: ripple-pulse 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.pulse-delay-1 {
+  animation-delay: 0.9s;
+}
+
+.pulse-delay-2 {
+  animation-delay: 1.8s;
+}
+
+/* Invisible scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

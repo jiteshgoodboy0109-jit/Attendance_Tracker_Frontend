@@ -9,17 +9,12 @@ import {
   FiFileText,
   FiGithub,
   FiVideo,
-  FiMoreHorizontal,
   FiCheckSquare
 } from 'react-icons/fi'
 
 import logoAtr from '../../assets/logo atr .webp'
 
-/**
- * Sidebar Component
- * Highly structured left navigation drawer that supports collapsible overlay transitions on mobile viewports.
- * Features theme toggle button and a dynamic streak/achievement indicator card.
- */
+
 function Sidebar({ 
   isSidebarOpen,
   setIsSidebarOpen

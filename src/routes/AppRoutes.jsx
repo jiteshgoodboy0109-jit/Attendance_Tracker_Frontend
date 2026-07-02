@@ -8,9 +8,10 @@ import ResetPassword from "../Pages/auth/Forgot_Password/ResetPassword";
 import Home from "../Pages/Home/Home";
 import Github from "../Pages/Github/Github";
 import Leave from "../pages/leave/Leave";
-import Dashboard from "../pages/dashboard/Dashboard";
+
 import { MainLayout } from "../layouts/MainLayout";
 import Task from "../Pages/Task/Task";
+import Dashboard from "../Pages/dashboard/Dashboard";
 function AppRoutes() {
   return (
     <Routes>
@@ -69,7 +70,7 @@ function AppRoutes() {
 
       <Route element={<MainLayout />}>
         <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard /> } />
         <Route path="/leave" element={<Leave />} />
         <Route path="/github" element={<Github />} />
         <Route path="/tasks" element={<Task />} />
