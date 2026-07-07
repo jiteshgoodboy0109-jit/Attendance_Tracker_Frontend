@@ -29,7 +29,7 @@ function Navbar({
   
 
   return (
-    <header className="fixed inset-0 z-40 h-16 px-3 sm:px-8 flex-shrink-0 flex items-center justify-between border-b transition-colors duration-300
+    <header className="sticky inset-0 z-40 h-16 px-3 sm:px-8 flex-shrink-0 flex items-center justify-between border-b transition-colors duration-300
                       bg-white dark:bg-[#08090C] border-slate-200 dark:border-slate-800/60">
       
       <div className="flex items-center gap-3 flex-shrink-0">

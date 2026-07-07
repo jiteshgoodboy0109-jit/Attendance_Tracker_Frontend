@@ -1,17 +1,17 @@
 import { Routes, Route } from "react-router-dom";
 
-import Login from "../Pages/auth/Login/Login";
-import ForgotPassword from "../Pages/auth/Forgot_Password/ForgotPassword";
-import RegisteredEmail from "../Pages/auth/Forgot_Password/RegisteredEmail";
-import OTPVerify from "../Pages/auth/Forgot_Password/OTPVerify";
-import ResetPassword from "../Pages/auth/Forgot_Password/ResetPassword";
-import Home from "../Pages/Home/Home";
-import Github from "../Pages/Github/Github";
+import Login from "../pages/auth/Login/Login";
+import ForgotPassword from "../pages/auth/Forgot_Password/ForgotPassword";
+import RegisteredEmail from "../pages/auth/Forgot_Password/RegisteredEmail";
+import OTPVerify from "../pages/auth/Forgot_Password/OTPVerify";
+import ResetPassword from "../pages/auth/Forgot_Password/ResetPassword";
+import Home from "../pages/Home/Home";
+import Github from "../pages/Github/Github";
 import Leave from "../pages/leave/Leave";
 
 import { MainLayout } from "../layouts/MainLayout";
-import Task from "../Pages/Task/Task";
-import Dashboard from "../Pages/dashboard/Dashboard";
+import Task from "../pages/Task/Task";
+import Dashboard from "../pages/dashboard/Dashboard";
 function AppRoutes() {
   return (
     <Routes>
