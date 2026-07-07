@@ -7,7 +7,7 @@ import { useState } from "react";
 export function MainLayout() {
 
     const [isDark, setIsDark] = useState(true)
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
     const [notifications, setNotifications] = useState([{
         id: 1,
         text: "Rahul requested leave",

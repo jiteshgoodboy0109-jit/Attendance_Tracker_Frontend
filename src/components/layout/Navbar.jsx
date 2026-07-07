@@ -5,9 +5,7 @@ import {
   HiOutlineChatAlt2,
   HiOutlineBell,
   HiOutlineMenu,
-  HiChevronRight,
 } from 'react-icons/hi'
-import { useLocation } from 'react-router-dom'
 
 function Navbar({
   isDark,
@@ -27,22 +25,11 @@ function Navbar({
   }, [])
 
 
-  const breadcrumbMap = {
-    home: 'Home',
-    dashboard: 'Dashboard',
-    attendance: "Attendance",
-    logs: "Attendance Logs",
-    employees: "Employees",
-    departments: "Departments",
-    roles: "Roles",
-    leave: "Leave",
-    applications: "Applications",
-  };
-  const location = useLocation();
-  const pathnames = location.pathname.split('/').filter((x) => x)
+  
+  
 
   return (
-    <header className="h-16 px-3 sm:px-8 flex-shrink-0 flex items-center justify-between border-b transition-colors duration-300
+    <header className="sticky inset-0 z-40 h-16 px-3 sm:px-8 flex-shrink-0 flex items-center justify-between border-b transition-colors duration-300
                       bg-white dark:bg-[#08090C] border-slate-200 dark:border-slate-800/60">
       
       <div className="flex items-center gap-3 flex-shrink-0">
